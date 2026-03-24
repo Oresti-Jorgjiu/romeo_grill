@@ -706,6 +706,10 @@ app.get("/dashboard", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin-dashboard.html"));
 });
 
+app.get("/en/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "en", "index.html"));
+});
+
 
 app.use((err, _req, res, _next) => {
   if (err && err.message === "Only image uploads are allowed.") {
