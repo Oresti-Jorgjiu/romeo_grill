@@ -8,34 +8,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <style>
-    .dashboard-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
-    .stat-card { border: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.04); border-radius: 20px; padding: 22px; text-align: center; }
-    .stat-number { font-size: 2.2rem; font-weight: 900; color: #ff8d2a; line-height: 1; }
-    .stat-label { color: #999; font-size: .82rem; text-transform: uppercase; letter-spacing: .12em; margin-top: 6px; }
-    .chart-container { position: relative; height: 200px; margin-top: 16px; display: flex; align-items: flex-end; gap: 4px; padding: 0 4px; }
-    .chart-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 0; }
-    .chart-bar { width: 100%; background: linear-gradient(to top, rgba(255,141,42,.6), rgba(255,141,42,.25)); border-radius: 6px 6px 0 0; min-height: 2px; transition: height .3s ease; }
-    .chart-bar:hover { background: linear-gradient(to top, rgba(255,141,42,.9), rgba(255,141,42,.5)); }
-    .chart-date { font-size: .6rem; color: #777; writing-mode: vertical-lr; transform: rotate(180deg); max-height: 50px; overflow: hidden; }
-    .top-pages { margin-top: 16px; }
-    .top-page-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.06); color: #ccc; font-size: .92rem; }
-    .top-page-row span:last-child { color: #ffb06a; font-weight: 700; }
-    .tab-bar { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
-    .tab-btn { padding: 10px 18px; border-radius: 14px; border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.04); color: #ccc; cursor: pointer; font-weight: 600; font-size: .92rem; transition: all .2s ease; }
-    .tab-btn.active { background: rgba(255,141,42,.15); border-color: rgba(255,141,42,.3); color: #ffb06a; }
-    .tab-btn:hover { background: rgba(255,255,255,.08); }
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
-    .password-form { max-width: 400px; }
-    .password-form input { margin-bottom: 14px; }
-    .success-msg { color: #9fffaf; margin-top: 10px; display: none; }
-    .error-msg { color: #ff9c9c; margin-top: 10px; display: none; }
-    @media (max-width: 720px) {
-      .dashboard-stats { grid-template-columns: repeat(2, 1fr); }
-      .chart-date { font-size: .5rem; }
-    }
-  </style>
 </head>
 <body data-page="dashboard">
 <header class="header">
@@ -94,9 +66,9 @@
     </div>
 
 
-    <div class="tab-panel" id="tab-menu">
+    <div id="tab-menu" class="tab-panel">
       <div class="admin-card">
-        <div class="repeat-header">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
           <h2>Featured Dishes</h2>
           <button class="btn btn-primary small-btn" id="addFeaturedBtn">+ Add Dish</button>
         </div>
@@ -105,12 +77,21 @@
       </div>
 
       <div class="admin-card">
-        <div class="repeat-header">
-          <h2>Menu Categories & Items</h2>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
+          <h2>Menu Categories</h2>
           <button class="btn btn-primary small-btn" id="addCategoryBtn">+ Add Category</button>
         </div>
-        <p class="muted">Organize your menu by categories. Each category has its own items with prices, photos and ingredients.</p>
+        <p class="muted">Manage the main menu structure. Click a shortcut to jump to a section.</p>
+        
+        <!-- Category Shortcut Bar -->
+        <div id="categoryShortcuts" class="category-shortcuts"></div>
+        
         <div id="menuAdminList" class="repeat-list"></div>
+        
+        <div style="margin-top: 40px; text-align: right; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 32px;">
+            <button class="btn btn-primary btn-glow btn-large save-all-btn" style="min-width: 240px;">Save All Menu Changes</button>
+            <button class="btn btn-secondary reset-form-btn" style="margin-left: 10px;">Reset Changes</button>
+        </div>
       </div>
     </div>
 
@@ -135,8 +116,8 @@
       <div class="admin-card">
         <h2>Save & Actions</h2>
         <p class="muted">Save all changes to the database, reset the form, or log out.</p>
-        <button class="btn btn-primary full" id="saveAllBtn">💾 Save Everything</button>
-        <button class="btn btn-secondary full" id="resetFormBtn" style="margin-top:12px;">↩️ Reset Form</button>
+        <button class="btn btn-primary full save-all-btn">💾 Save Everything</button>
+        <button class="btn btn-secondary full reset-form-btn" style="margin-top:12px;">↩️ Reset Form</button>
         <button class="btn btn-secondary full" id="logoutBtn" style="margin-top:12px;">🚪 Logout</button>
       </div>
     </div>

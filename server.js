@@ -12,7 +12,12 @@ const fs = require("fs");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const db = new Database(path.join(__dirname, "romeo-grill.db"));
+// Production-ready database path for Render.com persistent disks
+const dbDir = process.env.DATABASE_PATH ? path.dirname(process.env.DATABASE_PATH) : __dirname;
+if (dbDir !== __dirname && !fs.existsSync(dbDir)) fs.mkdirSync(dbDir, { recursive: true });
+const dbPath = process.env.DATABASE_PATH || path.join(__dirname, "romeo-grill.db");
+
+const db = new Database(dbPath);
 db.pragma("journal_mode = WAL");
 db.pragma("synchronous = NORMAL");
 db.pragma("foreign_keys = ON");
@@ -99,13 +104,17 @@ function validateDish(item, context = "dish") {
   if (!item || typeof item !== "object") return `${context}: invalid object`;
   if (!isNonEmptyString(item.id, 1, 80)) return `${context}: invalid id`;
   if (!isNonEmptyString(item.name, 2, 120)) return `${context}: invalid name`;
+  if (!isNonEmptyString(item.name_en, 0, 120)) return `${context}: invalid name_en`;
   if (!Number.isFinite(Number(item.price)) || Number(item.price) < 0) return `${context}: invalid price`;
   if (!isNonEmptyString(item.description, 0, 1000)) return `${context}: invalid description`;
+  if (!isNonEmptyString(item.description_en, 0, 1000)) return `${context}: invalid description_en`;
+  if (item.ingredients !== undefined && !isNonEmptyString(item.ingredients, 0, 1000)) return `${context}: invalid ingredients`;
+  if (item.ingredients_en !== undefined && !isNonEmptyString(item.ingredients_en, 0, 1000)) return `${context}: invalid ingredients_en`;
   if (!isSafeImagePath(item.image)) return `${context}: invalid image path`;
 
   if (item.gallery && Array.isArray(item.gallery)) {
-    if (item.gallery.length > 10) return `${context}: max 10 gallery photos`;
-    for (let p of item.gallery) if (!isSafeImagePath(p)) return `${context}: invalid gallery path`;
+    if (item.gallery.length > 20) return `${context}: max 20 gallery photos`;
+    for (let p of item.gallery) if (p && !isSafeImagePath(p)) return `${context}: invalid gallery path`;
   }
   return null;
 }
@@ -177,6 +186,9 @@ function validateSiteData(data) {
     if (!category || !isNonEmptyString(category.name, 2, 120)) {
       return { ok: false, error: `Invalid menu category at position ${i + 1}.` };
     }
+    if (!isNonEmptyString(category.name_en, 0, 120)) {
+      return { ok: false, error: `Invalid English name for category "${category.name}".` };
+    }
     if (!Array.isArray(category.items) || category.items.length === 0) {
       return { ok: false, error: `Menu category "${category.name}" must have at least one item.` };
     }
@@ -184,7 +196,6 @@ function validateSiteData(data) {
       const err = validateDish(category.items[j], `menu item "${category.name}" #${j + 1}`);
       if (err) return { ok: false, error: err };
     }
-    is
   }
 
   return { ok: true };
@@ -411,13 +422,19 @@ app.get("/api/admin/site-data", requireAdmin, (req, res) => {
 });
 
 app.put("/api/admin/site-data", requireAdmin, adminWriteLimiter, (req, res) => {
-  const data = req.body;
-  const validation = validateSiteData(data);
-  if (!validation.ok) {
-    return res.status(400).json({ error: validation.error });
+  try {
+    const data = req.body;
+    const validation = validateSiteData(data);
+    if (!validation.ok) {
+      console.warn("Validation failed for site-data update:", validation.error);
+      return res.status(400).json({ error: validation.error });
+    }
+    saveSiteData(data);
+    res.json({ success: true });
+  } catch (err) {
+    console.error("CRITICAL ERROR in PUT /api/admin/site-data:", err);
+    res.status(500).json({ error: "Internal server error during save.", details: err.message });
   }
-  saveSiteData(data);
-  res.json({ success: true });
 });
 
 app.post("/api/admin/change-password", requireAdmin, adminWriteLimiter, (req, res) => {

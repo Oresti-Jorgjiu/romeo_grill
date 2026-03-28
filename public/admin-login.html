@@ -10,17 +10,26 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body data-page="login">
+  <div class="login-bg">
+    <img src="images/hero_ultimate.jpg" alt="Romeo Grill Background">
+  </div>
   <div class="login-shell">
     <div class="login-card">
-      <span class="section-tag">Admin Login</span>
+      <span class="section-tag">Admin Panel</span>
       <h2>Log in to Dashboard</h2>
-      <p class="muted">This is the real login for the owner's panel.</p>
+      <p class="muted">Enter your credentials to manage the Romeo Grill website content and analytics.</p>
+      
       <form id="loginForm">
-        <input class="form-control" id="username" placeholder="Username" autocomplete="username">
-        <input class="form-control" id="password" type="password" placeholder="Password" autocomplete="current-password">
-        <button class="btn btn-primary full" type="submit">Login</button>
+        <input class="form-control" id="username" placeholder="Username" autocomplete="username" required>
+        <input class="form-control" id="password" type="password" placeholder="Password" autocomplete="current-password" required>
+        <button class="btn btn-primary full" type="submit">Log In to Dashboard</button>
       </form>
-      <p id="loginError" style="color:#ff9c9c;"></p>
+      
+      <div id="loginError"></div>
+
+      <div class="login-footer">
+        <a href="/">← Back to Website</a>
+      </div>
     </div>
   </div>
   <script src="admin.js"></script>

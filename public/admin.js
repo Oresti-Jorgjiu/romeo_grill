@@ -171,25 +171,52 @@ function createFeaturedEditor(item, index) {
       <h4>Featured Dish ${index + 1}</h4>
       <button type="button" class="btn btn-secondary small-btn remove-featured">Remove</button>
     </div>
-    <div class="admin-grid two">
-      <input class="featured-id" placeholder="ID" value="${item.id || ''}">
-      <input class="featured-name" placeholder="Name" value="${item.name || ''}">
-      <input class="featured-price" type="number" placeholder="Price" value="${item.price || 0}">
-      <textarea class="featured-description" rows="3" placeholder="Description" style="grid-column: span 2;">${item.description || ''}</textarea>
+    
+    <div class="admin-grid two" style="margin-bottom: 20px;">
+      <div class="input-group">
+        <label style="display:block; font-size: 0.75rem; color: #888; margin-bottom: 6px; font-weight: 700; text-transform: uppercase;">Unique ID</label>
+        <input class="featured-id" placeholder="e.g. gjiro-hapur" value="${item.id || ''}">
+      </div>
+      <div class="input-group">
+        <label style="display:block; font-size: 0.75rem; color: #888; margin-bottom: 6px; font-weight: 700; text-transform: uppercase;">Price (LEK)</label>
+        <input class="featured-price" type="number" placeholder="0" value="${item.price || 0}">
+      </div>
     </div>
-    <div class="inline-gallery" style="margin-top: 16px; padding: 12px; background: rgba(0,0,0,0.2); border-radius: 8px;">
-      <h5 style="margin-top:0; margin-bottom: 8px; font-size: 0.85rem; color: #aaa;">Photos (Main & Gallery)</h5>
+
+    <!-- Bilingual Content Section -->
+    <div class="input-group-lang" style="margin-bottom: 20px;">
+      <div class="input-group">
+        <label style="display:block; font-size: 0.75rem; font-weight: 700; margin-bottom: 6px;"><span class="lang-badge lang-al">SQ</span> DISH NAME</label>
+        <input class="featured-name" placeholder="Emri i pjatës" value="${item.name || ''}">
+      </div>
+      <div class="input-group">
+        <label style="display:block; font-size: 0.75rem; font-weight: 700; margin-bottom: 6px;"><span class="lang-badge lang-en">EN</span> DISH NAME</label>
+        <input class="featured-name-en" placeholder="Dish name (English)" value="${item.name_en || ''}">
+      </div>
+      
+      <div class="input-group">
+        <label style="display:block; font-size: 0.75rem; font-weight: 700; margin-bottom: 6px;"><span class="lang-badge lang-al">SQ</span> DESCRIPTION</label>
+        <textarea class="featured-description" rows="1" placeholder="Pershkrim i shkurte..." style="resize: vertical;">${item.description || ''}</textarea>
+      </div>
+      <div class="input-group">
+        <label style="display:block; font-size: 0.75rem; font-weight: 700; margin-bottom: 6px;"><span class="lang-badge lang-en">EN</span> DESCRIPTION</label>
+        <textarea class="featured-description-en" rows="1" placeholder="Short description..." style="resize: vertical;">${item.description_en || ''}</textarea>
+      </div>
+    </div>
+
+    <div class="inline-gallery-wrap" style="padding: 20px; background: rgba(0,0,0,0.15); border-radius: 18px; border: 1px solid rgba(255,255,255,0.05);">
+      <h5 style="margin-top:0; margin-bottom: 12px; font-size: 0.85rem; color: #ff4c79; text-transform: uppercase; letter-spacing: 0.05em;">Photos & Gallery</h5>
       <input type="hidden" class="featured-image" value="${item.image || ''}">
       <input type="hidden" class="featured-gallery" value="${galStr}">
       
-      <div class="gallery-previews" style="display:flex; gap:8px; overflow-x:auto; padding-bottom:8px; margin-bottom: 8px;">
-        ${item.image ? `<div class="preview" style="position:relative; width:80px; height:80px; flex-shrink:0; border-radius:8px; overflow:hidden; border:2px solid #ff8d2a;"><img src="${item.image}" style="width:100%; height:100%; object-fit:cover;"><button type="button" class="rm-img-btn" data-target="main" style="position:absolute; top:4px; right:4px; background:red; color:white; border:none; border-radius:50%; width:20px; height:20px; cursor:pointer;" title="Remove Main Photo">x</button><span style="position:absolute; bottom:0; left:0; right:0; background:rgba(255,141,42,0.8); color:#000; font-size:10px; text-align:center; font-weight:bold;">MAIN</span></div>` : ''}
-        ${(item.gallery || []).map(g => `<div class="preview" style="position:relative; width:80px; height:80px; flex-shrink:0; border-radius:8px; overflow:hidden;"><img src="${g}" style="width:100%; height:100%; object-fit:cover;"><button type="button" class="rm-img-btn" data-target="gallery" data-src="${g}" style="position:absolute; top:4px; right:4px; background:red; color:white; border:none; border-radius:50%; width:20px; height:20px; cursor:pointer;" title="Remove Photo">x</button></div>`).join('')}
+      <div class="gallery-previews" style="display:flex; gap:12px; overflow-x:auto; padding-bottom:12px; margin-bottom: 16px;">
+        ${item.image ? `<div class="preview"><img src="${item.image}"><button type="button" class="rm-img-btn" data-target="main" title="Remove Main Photo">×</button><span class="main-img-tag">MAIN</span></div>` : ''}
+        ${(item.gallery || []).map(g => `<div class="preview"><img src="${g}"><button type="button" class="rm-img-btn" data-target="gallery" data-src="${g}" title="Remove Photo">×</button></div>`).join('')}
       </div>
       
-      <div style="display:flex; gap:8px;">
-        <input type="file" class="item-file-input" accept="image/*" multiple>
-        <button type="button" class="btn btn-primary small-btn upload-inline-btn" style="flex-shrink:0;">Upload Selected</button>
+      <div style="display:flex; gap:10px; align-items: center;">
+        <input type="file" class="item-file-input" accept="image/*" multiple style="background: transparent; border: none; padding: 0;">
+        <button type="button" class="btn btn-primary small-btn upload-inline-btn" style="flex-shrink:0;">Upload Images</button>
       </div>
     </div>
   `;
@@ -256,29 +283,64 @@ function createMenuItemEditor(item, itemIndex) {
   const galStr = (item.gallery || []).join(',');
   div.innerHTML = `
     <div class="repeat-header">
-      <h4>Item ${itemIndex + 1}</h4>
+      <h4>Menu Item ${itemIndex + 1}</h4>
       <button type="button" class="btn btn-secondary small-btn remove-item">Remove</button>
     </div>
-    <div class="admin-grid two">
-      <input class="item-id" placeholder="ID" value="${item.id || ''}">
-      <input class="item-name" placeholder="Name" value="${item.name || ''}">
-      <input class="item-price" type="number" placeholder="Price" value="${item.price || 0}">
-      <textarea class="item-description" rows="3" placeholder="Description">${item.description || ''}</textarea>
-      <textarea class="item-ingredients" rows="3" placeholder="Ingredients" style="grid-column: span 2;">${item.ingredients || ''}</textarea>
+    
+    <div class="admin-grid two" style="margin-bottom: 20px;">
+      <div class="input-group">
+        <label style="display:block; font-size: 0.75rem; color: #888; margin-bottom: 6px; font-weight: 700; text-transform: uppercase;">Unique ID (Permanent)</label>
+        <input class="item-id" placeholder="e.g. burger-mbret" value="${item.id || ''}">
+      </div>
+      <div class="input-group">
+        <label style="display:block; font-size: 0.75rem; color: #888; margin-bottom: 6px; font-weight: 700; text-transform: uppercase;">Price (LEK)</label>
+        <input class="item-price" type="number" placeholder="0" value="${item.price || 0}">
+      </div>
     </div>
-    <div class="inline-gallery" style="margin-top: 16px; padding: 12px; background: rgba(0,0,0,0.2); border-radius: 8px;">
-      <h5 style="margin-top:0; margin-bottom: 8px; font-size: 0.85rem; color: #aaa;">Photos (Main & Gallery)</h5>
+
+    <!-- Bilingual Content Section -->
+    <div class="input-group-lang">
+      <div class="input-group">
+        <label style="display:block; font-size: 0.75rem; font-weight: 700; margin-bottom: 6px;"><span class="lang-badge lang-al">SQ</span> PRODUCT NAME</label>
+        <input class="item-name" placeholder="Emri i produktit" value="${item.name || ''}">
+      </div>
+      <div class="input-group">
+        <label style="display:block; font-size: 0.75rem; font-weight: 700; margin-bottom: 6px;"><span class="lang-badge lang-en">EN</span> PRODUCT NAME</label>
+        <input class="item-name-en" placeholder="Product name" value="${item.name_en || ''}">
+      </div>
+      
+      <div class="input-group">
+        <label style="display:block; font-size: 0.75rem; font-weight: 700; margin-bottom: 6px;"><span class="lang-badge lang-al">SQ</span> DESCRIPTION</label>
+        <textarea class="item-description" rows="1" placeholder="Pershkrim i shkurte..." style="resize: vertical;">${item.description || ''}</textarea>
+      </div>
+      <div class="input-group">
+        <label style="display:block; font-size: 0.75rem; font-weight: 700; margin-bottom: 6px;"><span class="lang-badge lang-en">EN</span> DESCRIPTION</label>
+        <textarea class="item-description-en" rows="1" placeholder="Short description..." style="resize: vertical;">${item.description_en || ''}</textarea>
+      </div>
+
+      <div class="input-group" style="grid-column: span 2;">
+        <label style="display:block; font-size: 0.75rem; font-weight: 700; margin-bottom: 6px;"><span class="lang-badge lang-al">SQ</span> INGREDIENTS</label>
+        <textarea class="item-ingredients" rows="1" placeholder="Perberesit..." style="resize: vertical;">${item.ingredients || ''}</textarea>
+      </div>
+      <div class="input-group" style="grid-column: span 2;">
+        <label style="display:block; font-size: 0.75rem; font-weight: 700; margin-bottom: 6px;"><span class="lang-badge lang-en">EN</span> INGREDIENTS</label>
+        <textarea class="item-ingredients-en" rows="1" placeholder="Ingredients..." style="resize: vertical;">${item.ingredients_en || ''}</textarea>
+      </div>
+    </div>
+
+    <div class="inline-gallery-wrap" style="padding: 20px; background: rgba(0,0,0,0.15); border-radius: 18px; border: 1px solid rgba(255,255,255,0.05);">
+<span style="font-size: 0.75rem; color: #888; font-weight: 700; text-transform: uppercase;">Photos & Gallery</span>
       <input type="hidden" class="item-image" value="${item.image || ''}">
       <input type="hidden" class="item-gallery" value="${galStr}">
       
-      <div class="gallery-previews" style="display:flex; gap:8px; overflow-x:auto; padding-bottom:8px; margin-bottom: 8px;">
-        ${item.image ? `<div class="preview" style="position:relative; width:80px; height:80px; flex-shrink:0; border-radius:8px; overflow:hidden; border:2px solid #ff8d2a;"><img src="${item.image}" style="width:100%; height:100%; object-fit:cover;"><button type="button" class="rm-img-btn" data-target="main" style="position:absolute; top:4px; right:4px; background:red; color:white; border:none; border-radius:50%; width:20px; height:20px; cursor:pointer;" title="Remove Main Photo">x</button><span style="position:absolute; bottom:0; left:0; right:0; background:rgba(255,141,42,0.8); color:#000; font-size:10px; text-align:center; font-weight:bold;">MAIN</span></div>` : ''}
-        ${(item.gallery || []).map(g => `<div class="preview" style="position:relative; width:80px; height:80px; flex-shrink:0; border-radius:8px; overflow:hidden;"><img src="${g}" style="width:100%; height:100%; object-fit:cover;"><button type="button" class="rm-img-btn" data-target="gallery" data-src="${g}" style="position:absolute; top:4px; right:4px; background:red; color:white; border:none; border-radius:50%; width:20px; height:20px; cursor:pointer;" title="Remove Photo">x</button></div>`).join('')}
+      <div class="gallery-previews" style="display:flex; gap:12px; overflow-x:auto; padding-bottom:12px; margin-bottom: 16px;">
+        ${item.image ? `<div class="preview"><img src="${item.image}"><button type="button" class="rm-img-btn" data-target="main" title="Remove Main Photo">×</button><span class="main-img-tag">MAIN</span></div>` : ''}
+        ${(item.gallery || []).map(g => `<div class="preview"><img src="${g}"><button type="button" class="rm-img-btn" data-target="gallery" data-src="${g}" title="Remove Photo">×</button></div>`).join('')}
       </div>
       
-      <div style="display:flex; gap:8px;">
-        <input type="file" class="item-file-input" accept="image/*" multiple>
-        <button type="button" class="btn btn-primary small-btn upload-inline-btn" style="flex-shrink:0;">Upload Selected</button>
+      <div style="display:flex; gap:10px; align-items: center;">
+        <input type="file" class="item-file-input" accept="image/*" multiple style="background: transparent; border: none; padding: 0;">
+        <button type="button" class="btn btn-primary small-btn upload-inline-btn" style="flex-shrink:0;">Upload Images</button>
       </div>
     </div>
   `;
@@ -339,26 +401,79 @@ function createMenuItemEditor(item, itemIndex) {
   return div;
 }
 
+function renderCategoryShortcuts() {
+  const container = byId('categoryShortcuts');
+  if (!container) return;
+  const categories = document.querySelectorAll('.menu-category-card');
+  container.innerHTML = '';
+  categories.forEach((card, i) => {
+    const name = card.querySelector('.category-name').value || `Category ${i + 1}`;
+    const chip = document.createElement('div');
+    chip.className = 'shortcut-chip';
+    chip.textContent = name;
+    chip.title = `Jump to ${name}`;
+    chip.onclick = () => {
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      card.classList.remove('collapsed');
+    };
+    container.appendChild(chip);
+  });
+}
+
 function createCategoryEditor(category, index) {
   const wrap = document.createElement('div');
   wrap.className = 'repeat-card menu-category-card';
+  wrap.id = `admin-cat-${index}`;
   wrap.innerHTML = `
     <div class="repeat-header">
-      <h4>Category ${index + 1}</h4>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button type="button" class="toggle-collapse" title="Collapse/Expand">▼</button>
+        <h4 class="cat-title-text">${category.name || `Category ${index + 1}`}</h4>
+      </div>
       <div class="inline-actions">
         <button type="button" class="btn btn-primary small-btn add-item">+ Add Item</button>
         <button type="button" class="btn btn-secondary small-btn remove-category">Remove</button>
       </div>
     </div>
-    <input class="category-name" placeholder="Category name" value="${category.name || ''}">
+    
+    <div class="input-group-lang" style="margin-bottom: 24px;">
+      <div class="input-group">
+        <label style="display:block; font-size: 0.75rem; font-weight: 700; margin-bottom: 6px;"><span class="lang-badge lang-al">SQ</span> CATEGORY NAME</label>
+        <input class="category-name" placeholder="Emri i kategorisë" value="${category.name || ''}">
+      </div>
+      <div class="input-group">
+        <label style="display:block; font-size: 0.75rem; font-weight: 700; margin-bottom: 6px;"><span class="lang-badge lang-en">EN</span> CATEGORY NAME</label>
+        <input class="category-name-en" placeholder="Category name (English)" value="${category.name_en || ''}">
+      </div>
+    </div>
+
     <div class="category-items-list"></div>
   `;
+
+  // Collapse toggle
+  wrap.querySelector('.toggle-collapse').onclick = () => {
+    wrap.classList.toggle('collapsed');
+    wrap.querySelector('.toggle-collapse').textContent = wrap.classList.contains('collapsed') ? '►' : '▼';
+  };
+
+  // Live title update
+  wrap.querySelector('.category-name').oninput = (e) => {
+    wrap.querySelector('.cat-title-text').textContent = e.target.value || `Category ${index + 1}`;
+    renderCategoryShortcuts();
+  };
+
   const itemList = wrap.querySelector('.category-items-list');
   (category.items || []).forEach((item, itemIndex) => itemList.appendChild(createMenuItemEditor(item, itemIndex)));
+  
   wrap.querySelector('.add-item').addEventListener('click', () => {
     itemList.appendChild(createMenuItemEditor({ id: '', name: '', price: 0, description: '', ingredients: '', image: '' }, itemList.children.length));
   });
-  wrap.querySelector('.remove-category').addEventListener('click', () => wrap.remove());
+  wrap.querySelector('.remove-category').addEventListener('click', () => {
+    if (confirm('Remove entire category and all its items?')) {
+      wrap.remove();
+      renderCategoryShortcuts();
+    }
+  });
   return wrap;
 }
 
@@ -370,6 +485,9 @@ function renderAdminForm(data) {
   menuAdminList.innerHTML = '';
   (data.featuredDishes || []).forEach((item, index) => featuredAdminList.appendChild(createFeaturedEditor(item, index)));
   (data.menuCategories || []).forEach((category, index) => menuAdminList.appendChild(createCategoryEditor(category, index)));
+  
+  // Refresh jump-links
+  renderCategoryShortcuts();
 }
 
 
@@ -379,9 +497,13 @@ function collectFeatured() {
   return [...document.querySelectorAll('#featuredAdminList .repeat-card')].map(card => ({
     id: card.querySelector('.featured-id').value.trim(),
     name: card.querySelector('.featured-name').value.trim(),
+    name_en: card.querySelector('.featured-name-en').value.trim(),
     price: Number(card.querySelector('.featured-price').value || 0),
     image: card.querySelector('.featured-image').value.trim(),
     description: card.querySelector('.featured-description').value.trim(),
+    description_en: card.querySelector('.featured-description-en').value.trim(),
+    ingredients: '',
+    ingredients_en: '',
     gallery: (card.querySelector('.featured-gallery').value || '').split(',').map(s => s.trim()).filter(Boolean)
   })).filter(item => item.name);
 }
@@ -389,13 +511,17 @@ function collectFeatured() {
 function collectMenuCategories() {
   return [...document.querySelectorAll('#menuAdminList .menu-category-card')].map(categoryCard => ({
     name: categoryCard.querySelector('.category-name').value.trim(),
+    name_en: categoryCard.querySelector('.category-name-en').value.trim(),
     items: [...categoryCard.querySelectorAll('.category-items-list > .repeat-card')].map(itemCard => ({
       id: itemCard.querySelector('.item-id').value.trim(),
       name: itemCard.querySelector('.item-name').value.trim(),
+      name_en: itemCard.querySelector('.item-name-en').value.trim(),
       price: Number(itemCard.querySelector('.item-price').value || 0),
       image: itemCard.querySelector('.item-image').value.trim(),
       description: itemCard.querySelector('.item-description').value.trim(),
+      description_en: itemCard.querySelector('.item-description-en').value.trim(),
       ingredients: itemCard.querySelector('.item-ingredients').value.trim(),
+      ingredients_en: itemCard.querySelector('.item-ingredients-en').value.trim(),
       gallery: (itemCard.querySelector('.item-gallery').value || '').split(',').map(s => s.trim()).filter(Boolean)
     })).filter(item => item.name)
   })).filter(category => category.name);
@@ -473,24 +599,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     // Save
-    byId('saveAllBtn').addEventListener('click', async () => {
-      const data = collectAllData();
-      const result = await saveSiteData(data);
-      if (!result.ok) {
-        alert(result.data.error || 'Save failed.');
-        return;
-      }
-      currentSiteData = data;
-      renderAdminForm(currentSiteData);
-      alert('Saved successfully!');
+    document.querySelectorAll('.save-all-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const data = collectAllData();
+        const result = await saveSiteData(data);
+        if (!result.ok) {
+          alert(result.data.error || 'Save failed.');
+          return;
+        }
+        currentSiteData = data;
+        renderAdminForm(currentSiteData);
+        alert('Saved successfully!');
+      });
     });
 
     // Reset
-    byId('resetFormBtn').addEventListener('click', async () => {
-      const data = await fetchSiteData();
-      currentSiteData = data;
-      renderAdminForm(data);
-      alert('Form reset to saved data.');
+    document.querySelectorAll('.reset-form-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const data = await fetchSiteData();
+        currentSiteData = data;
+        renderAdminForm(data);
+        alert('Form reset to saved data.');
+      });
     });
 
     // Logout
