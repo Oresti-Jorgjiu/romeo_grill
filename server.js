@@ -150,30 +150,28 @@ function validateSiteData(data) {
   const siteData = normalizeSiteData(data);
 
   const basicFields = [
-    ["brandTitle", 2, 80],
-    ["brandSub", 2, 120],
-    ["heroBadge", 2, 120],
-    ["heroTitle", 2, 120],
-    ["heroDescription", 10, 1000],
-    ["aboutTag", 2, 120],
-    ["aboutTitle", 5, 160],
-    ["aboutLead", 10, 1200],
-    ["aboutDescription", 10, 1200],
-    ["contactAddress", 3, 200],
-    ["contactPhone", 6, 30],
-    ["contactHours", 3, 120],
-    ["contactInstagram", 2, 120],
-    ["contactFacebook", 2, 120],
-    ["mapLink", 10, 500],
-    ["instagramLink", 10, 500],
-    ["facebookLink", 10, 500],
-    ["whatsappNumber", 6, 20],
-    ["menuPageTitle", 2, 120],
-    ["menuPageDescription", 10, 500]
+    ["brandTitle", 0, 100],
+    ["brandTitle_en", 0, 100],
+    ["brandSub", 0, 150],
+    ["heroBadge", 0, 150],
+    ["heroTitle", 0, 150],
+    ["heroDescription", 0, 1000],
+    ["aboutTag", 0, 150],
+    ["aboutTitle", 0, 200],
+    ["aboutLead", 0, 2000],
+    ["aboutDescription", 0, 2000],
+    ["contactPhone", 0, 50],
+    ["contactAddress", 0, 500],
+    ["contactHours", 0, 300],
+    ["whatsappNumber", 0, 50],
+    ["googleMapsUrl", 0, 2000],
+    ["contactInstagram", 0, 200],
+    ["contactFacebook", 0, 200]
   ];
 
   for (const [field, min, max] of basicFields) {
-    if (!isNonEmptyString(siteData[field], min, max)) {
+    const val = siteData[field];
+    if (val !== undefined && !isNonEmptyString(val, min, max)) {
       return { ok: false, error: `Invalid field: ${field}` };
     }
   }
