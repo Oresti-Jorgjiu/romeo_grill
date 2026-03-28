@@ -17,6 +17,18 @@ const dbDir = process.env.DATABASE_PATH ? path.dirname(process.env.DATABASE_PATH
 if (dbDir !== __dirname && !fs.existsSync(dbDir)) fs.mkdirSync(dbDir, { recursive: true });
 const dbPath = process.env.DATABASE_PATH || path.join(__dirname, "romeo-grill.db");
 
+// Auto-seed: If production database doesn't exist, copy from the local one
+const localDbPath = path.join(__dirname, "romeo-grill.db");
+if (dbPath !== localDbPath && !fs.existsSync(dbPath)) {
+  console.log(`First-time setup: Seeding production database from ${localDbPath}...`);
+  try {
+    fs.copyFileSync(localDbPath, dbPath);
+    console.log("Database seeded successfully!");
+  } catch (err) {
+    console.error("CRITICAL: Failed to seed production database:", err);
+  }
+}
+
 const db = new Database(dbPath);
 db.pragma("journal_mode = WAL");
 db.pragma("synchronous = NORMAL");
