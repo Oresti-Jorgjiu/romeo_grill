@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="sq">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,34 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    .dashboard-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+    .stat-card { border: 1px solid rgba(255,255,255,.08); background: rgba(255,255,255,.04); border-radius: 20px; padding: 22px; text-align: center; }
+    .stat-number { font-size: 2.2rem; font-weight: 900; color: #ff8d2a; line-height: 1; }
+    .stat-label { color: #999; font-size: .82rem; text-transform: uppercase; letter-spacing: .12em; margin-top: 6px; }
+    .chart-container { position: relative; height: 200px; margin-top: 16px; display: flex; align-items: flex-end; gap: 4px; padding: 0 4px; }
+    .chart-bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 0; }
+    .chart-bar { width: 100%; background: linear-gradient(to top, rgba(255,141,42,.6), rgba(255,141,42,.25)); border-radius: 6px 6px 0 0; min-height: 2px; transition: height .3s ease; }
+    .chart-bar:hover { background: linear-gradient(to top, rgba(255,141,42,.9), rgba(255,141,42,.5)); }
+    .chart-date { font-size: .6rem; color: #777; writing-mode: vertical-lr; transform: rotate(180deg); max-height: 50px; overflow: hidden; }
+    .top-pages { margin-top: 16px; }
+    .top-page-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,.06); color: #ccc; font-size: .92rem; }
+    .top-page-row span:last-child { color: #ffb06a; font-weight: 700; }
+    .tab-bar { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+    .tab-btn { padding: 10px 18px; border-radius: 14px; border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.04); color: #ccc; cursor: pointer; font-weight: 600; font-size: .92rem; transition: all .2s ease; }
+    .tab-btn.active { background: rgba(255,141,42,.15); border-color: rgba(255,141,42,.3); color: #ffb06a; }
+    .tab-btn:hover { background: rgba(255,255,255,.08); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .password-form { max-width: 400px; }
+    .password-form input { margin-bottom: 14px; }
+    .success-msg { color: #9fffaf; margin-top: 10px; display: none; }
+    .error-msg { color: #ff9c9c; margin-top: 10px; display: none; }
+    @media (max-width: 720px) {
+      .dashboard-stats { grid-template-columns: repeat(2, 1fr); }
+      .chart-date { font-size: .5rem; }
+    }
+  </style>
 </head>
 <body data-page="dashboard">
 <header class="header">
@@ -18,117 +46,101 @@
     </a>
     <nav class="nav-links">
       <a href="/">Website</a>
-      <a href="/menu.html">Menu</a>
+      <a href="/#menu">Menu</a>
     </nav>
     <div class="cart-link" id="adminWelcome">Admin</div>
   </div>
 </header>
 
 <section class="section">
-  <div class="container admin-layout">
-    <div class="admin-card admin-sidebar">
-      <h2>Kontrolli</h2>
-      <p class="muted">Ndryshimet ruhen direkt ne databaze.</p>
-      <button class="btn btn-primary full" id="saveAllBtn">Ruaj Gjithcka</button>
-      <button class="btn btn-secondary full" id="resetFormBtn" style="margin-top:12px;">Kthe Formularin</button>
-      <button class="btn btn-secondary full" id="logoutBtn" style="margin-top:12px;">Dil</button>
+  <div class="container">
+
+    <!-- Tab Navigation -->
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="analytics">📊 Analytics</button>
+      <button class="tab-btn" data-tab="menu">🍽️ Menu</button>
+      <button class="tab-btn" data-tab="password">🔒 Password</button>
+      <button class="tab-btn" data-tab="actions" style="margin-left:auto;">⚙️ Actions</button>
     </div>
 
-    <div class="admin-main">
+    <!-- TAB: Analytics -->
+    <div class="tab-panel active" id="tab-analytics">
       <div class="admin-card">
-        <h2>Permbajtja e Website-it</h2>
-        <div class="admin-grid two">
-          <input id="brandTitleInput" placeholder="Brand title">
-          <input id="brandSubInput" placeholder="Brand subtitle">
-          <input id="heroBadgeInput" placeholder="Hero badge">
-          <input id="heroTitleInput" placeholder="Hero title">
-          <textarea id="heroDescriptionInput" rows="4" placeholder="Hero description"></textarea>
-          <input id="heroImageInput" placeholder="Hero image path">
-          <input id="addressInput" placeholder="Adresa">
-          <input id="phoneInput" placeholder="Telefoni">
-          <input id="hoursInput" placeholder="Orari">
-          <input id="instagramInput" placeholder="Instagram label (p.sh. @romeogrill2024)">
-          <input id="facebookInput" placeholder="Facebook label (p.sh. Romeo Grill)">
-          <input id="mapLinkInput" placeholder="Google Maps link">
-          <input id="instagramLinkInput" placeholder="Instagram link (URL e plote)">
-          <input id="facebookLinkInput" placeholder="Facebook link (URL e plote)">
-          <input id="whatsappInput" placeholder="WhatsApp number (p.sh. 0697708333)">
+        <h2>Visitor Analytics</h2>
+        <p class="muted">Page views tracked automatically for all public pages.</p>
+        <div class="dashboard-stats">
+          <div class="stat-card">
+            <div class="stat-number" id="statToday">0</div>
+            <div class="stat-label">Today</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="statWeek">0</div>
+            <div class="stat-label">Last 7 Days</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="statMonth">0</div>
+            <div class="stat-label">Last 30 Days</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="statTotal">0</div>
+            <div class="stat-label">All Time</div>
+          </div>
         </div>
+        <h3>Daily Views (Last 30 Days)</h3>
+        <div class="chart-container" id="dailyChart"></div>
+        <h3 style="margin-top:24px;">Top Pages</h3>
+        <div class="top-pages" id="topPages"></div>
       </div>
+    </div>
 
-      <div class="admin-card">
-        <h2>Seksioni Rreth Nesh</h2>
-        <div class="admin-grid">
-          <input id="aboutTagInput" placeholder="About tag (p.sh. Menu e qarte)">
-          <input id="aboutTitleInput" placeholder="About title">
-          <textarea id="aboutLeadInput" rows="3" placeholder="About lead paragraph"></textarea>
-          <textarea id="aboutDescriptionInput" rows="3" placeholder="About description paragraph"></textarea>
-        </div>
-      </div>
 
-      <div class="admin-card">
-        <h2>Faqja e Menuse</h2>
-        <div class="admin-grid">
-          <input id="menuPageTitleInput" placeholder="Titulli i faqes Menu">
-          <textarea id="menuPageDescriptionInput" rows="3" placeholder="Pershkrimi i faqes Menu"></textarea>
-        </div>
-      </div>
-
+    <div class="tab-panel" id="tab-menu">
       <div class="admin-card">
         <div class="repeat-header">
-          <h2>Rregulla te fshehura te biznesit</h2>
-          <button class="btn btn-primary small-btn" id="addDiscountRuleBtn">Shto Rregull</button>
+          <h2>Featured Dishes</h2>
+          <button class="btn btn-primary small-btn" id="addFeaturedBtn">+ Add Dish</button>
         </div>
-        <p class="muted">Ky seksion mbetet i fshehur nga klientet. Mund te perdoret vetem nga admini nese nevojitet me vone.</p>
-        <div id="hotelDiscountRulesList" class="repeat-list"></div>
-      </div>
-
-      <div class="admin-card">
-        <div class="repeat-header">
-          <h2>Pjatat Kryesore</h2>
-          <button class="btn btn-primary small-btn" id="addFeaturedBtn">Shto Pjate</button>
-        </div>
+        <p class="muted">These appear on the homepage as highlighted items.</p>
         <div id="featuredAdminList" class="repeat-list"></div>
       </div>
 
       <div class="admin-card">
         <div class="repeat-header">
-          <h2>Menuja sipas Kategorive</h2>
-          <button class="btn btn-primary small-btn" id="addCategoryBtn">Shto Kategori</button>
+          <h2>Menu Categories & Items</h2>
+          <button class="btn btn-primary small-btn" id="addCategoryBtn">+ Add Category</button>
         </div>
+        <p class="muted">Organize your menu by categories. Each category has its own items with prices, photos and ingredients.</p>
         <div id="menuAdminList" class="repeat-list"></div>
       </div>
+    </div>
 
+    <!-- TAB: Password -->
+    <div class="tab-panel" id="tab-password">
       <div class="admin-card">
-        <h2>Imazhet e Story Section</h2>
-        <div class="admin-grid two">
-          <input id="storyImage1" placeholder="Image 1">
-          <input id="storyImage2" placeholder="Image 2">
-          <input id="storyImage3" placeholder="Image 3">
-          <input id="storyImage4" placeholder="Image 4">
+        <h2>Change Password</h2>
+        <p class="muted">Enter your current password and choose a new one (minimum 8 characters).</p>
+        <div class="password-form">
+          <input type="password" id="currentPassword" placeholder="Current password" autocomplete="current-password">
+          <input type="password" id="newPassword" placeholder="New password" autocomplete="new-password">
+          <input type="password" id="confirmPassword" placeholder="Confirm new password" autocomplete="new-password">
+          <button class="btn btn-primary" id="changePasswordBtn">Change Password</button>
+          <p class="success-msg" id="passwordSuccess">Password changed successfully!</p>
+          <p class="error-msg" id="passwordError"></p>
         </div>
-      </div>
-
-      
-      <div class="admin-card">
-        <div class="repeat-header">
-          <h2>Upload Imazhesh nga Telefoni</h2>
-        </div>
-        <p class="muted">Ngarko imazhin ketu. Pastaj kopjo path-in qe kthehet dhe vendose te fusha e duhur (hero image, pjate, etj).</p>
-        <div class="admin-grid two">
-          <input type="file" id="imageUploadInput" accept="image/*">
-          <button class="btn btn-primary" id="uploadImageBtn">Ngarko Imazhin</button>
-        </div>
-        <input id="uploadedImagePath" readonly placeholder="Ketu del path-i i imazhit te ngarkuar">
-      </div>
-
-      
-
-      <div class="admin-card">
-        <h2>Preview JSON</h2>
-        <pre id="adminJsonPreview" class="json-preview"></pre>
       </div>
     </div>
+
+    <!-- TAB: Actions -->
+    <div class="tab-panel" id="tab-actions">
+      <div class="admin-card">
+        <h2>Save & Actions</h2>
+        <p class="muted">Save all changes to the database, reset the form, or log out.</p>
+        <button class="btn btn-primary full" id="saveAllBtn">💾 Save Everything</button>
+        <button class="btn btn-secondary full" id="resetFormBtn" style="margin-top:12px;">↩️ Reset Form</button>
+        <button class="btn btn-secondary full" id="logoutBtn" style="margin-top:12px;">🚪 Logout</button>
+      </div>
+    </div>
+
   </div>
 </section>
 

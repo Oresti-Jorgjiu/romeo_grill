@@ -8,8 +8,6 @@ const Database = require("better-sqlite3");
 const bcrypt = require("bcryptjs");
 const multer = require("multer");
 const fs = require("fs");
-const nodemailer = require("nodemailer");
-const twilio = require("twilio");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,6 +16,7 @@ const db = new Database(path.join(__dirname, "romeo-grill.db"));
 db.pragma("journal_mode = WAL");
 db.pragma("synchronous = NORMAL");
 db.pragma("foreign_keys = ON");
+
 const uploadDir = path.join(__dirname, "public", "uploads");
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
 
@@ -28,6 +27,7 @@ const storage = multer.diskStorage({
     cb(null, safeName);
   }
 });
+
 const upload = multer({
   storage,
   limits: { fileSize: 5 * 1024 * 1024 },
@@ -39,45 +39,17 @@ const upload = multer({
   }
 });
 
-function createMailer() {
-  const host = process.env.SMTP_HOST;
-  const port = Number(process.env.SMTP_PORT || 587);
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
-
-  if (!host || !user || !pass) return null;
-
-  return nodemailer.createTransport({
-    host,
-    port,
-    secure: port === 465,
-    auth: { user, pass }
-  });
-}
-
-const mailer = createMailer();
-
-function createSmsClient() {
-  const sid = process.env.TWILIO_ACCOUNT_SID;
-  const token = process.env.TWILIO_AUTH_TOKEN;
-  if (!sid || !token) return null;
-  return twilio(sid, token);
-}
-
-const smsClient = createSmsClient();
-
-
 const defaultSiteData = {
   brandTitle: "Romeo Grill",
   brandSub: "Korce, Albania",
   heroBadge: "Fast Food • Grill • Gjiro",
   heroTitle: "Romeo Grill",
-  heroDescription: "Grill, gjiro dhe pjata te nxehta ne zemer te Korces. Menu e ndare qarte me cmime te hapura — zgjedh kategorine, kliko produktin dhe shiko perberesit e plote.",
-  heroImage: "images/storefront.jpeg",
-  aboutTag: "Menu e qarte, jo rremuje",
-  aboutTitle: "Kategorite hapen thjesht, artikujt shihen qarte, detajet dalin me nje klikim.",
-  aboutLead: "Tek Romeo Grill gjeni gjiro, pjata grilli dhe shtesa me cmime te dukshme. Zgjidhni kategorine, shikoni artikujt dhe klikoni produktin per te pare foton, perberesit dhe detajet e plota.",
-  aboutDescription: "Jemi te hapur cdo dite 09:00 – 23:00. Mund te kontaktoni direkt ne WhatsApp ose telefon per informacion shtese. Lokacioni yne eshte lehtesisht i arritshem ne qender te Korces.",
+  heroDescription: "Grill, gjiro dhe pjata te nxehta ne zemer te Korces. Zgjidhni me te miren per vaktin tuaj dhe shijoni freskine e mjeshtrine ne cdo kafshate.",
+  heroImage: "images/hero_ultimate.jpg",
+  aboutTag: "Tradite dhe Shije",
+  aboutTitle: "Shija e vertete e zgares, e pergatitur me mjeshtri cdo dite.",
+  aboutLead: "Te Romeo Grill, ne nuk sherbejme thjesht ushqim — ne ofrojme nje pervoje. Nga xiroja e ngrohte dhe plot shije, te pjatat e bollshme te zgares me mishra te perzgjedhur, cdo porosi pergatitet me kujdes e pasion.",
+  aboutDescription: "Ne besojme te cilesia e larte dhe perberesit gjithmone te fresket. Qofsh ne kerkim te nje vakti te shpejte gjate pushimit, apo nje darke te bollshme familjare, Romeo Grill ne zemer te Korces eshte ndalesa juaj ideale.",
   contactAddress: "Korce, Albania",
   contactPhone: "0696930010",
   contactHours: "09:00 - 23:00",
@@ -87,280 +59,20 @@ const defaultSiteData = {
   instagramLink: "https://www.instagram.com/romeogrill2024/",
   facebookLink: "https://www.facebook.com/romeo.grill.3/",
   whatsappNumber: "0696472338",
-  hotelDiscountRules: [],
-  menuPageTitle: "Menuja e Romeo Grill — Gjiro, Grill & Fast Food",
-  menuPageDescription: "Zgjidhni kategorine, shikoni artikujt me cmimet e tyre dhe klikoni produktin per te pare foton, perberesit dhe detajet e plota.",
+  menuPageTitle: "Menuja e Romeo Grill",
+  menuPageDescription: "Eksploroni menune tone te pasur. Zgjidhni kategorine tuaj te preferuar dhe zbuloni pjatat tona te pergatitura me dashuri.",
   storyImages: [
     "images/dish-4.jpeg",
     "images/dish-5.jpeg",
     "images/dish-6.jpeg",
     "images/dish-7.jpeg"
   ],
-  featuredDishes: [
-    {
-      id: "gjiro-mish-pule",
-      name: "Gjiro me Mish Pule",
-      price: 450,
-      description: "Nje nga zgjedhjet me te kerkuara, me strukture te qarte dhe perberes te dukshem.",
-      image: "images/dish-1.jpeg"
-    },
-    {
-      id: "gjiro-me-qofte",
-      name: "Gjiro me Qofte",
-      price: 450,
-      description: "Opsion klasik per klientet qe duan shije me te forte dhe kombinim te plote.",
-      image: "images/dish-2.jpeg"
-    },
-    {
-      id: "gjiro-mish-derri",
-      name: "Gjiro me Mish Derri",
-      price: 450,
-      description: "Produkt baze i menuse qe duhet te gjendet shpejt dhe te shfaqe qarte perberesit.",
-      image: "images/dish-8.jpeg"
-    }
-  ],
-  menuCategories: [
-    {
-      name: "Gjiro",
-      items: [
-        {
-          id: "gjiro-patate",
-          name: "Gjiro me Patate",
-          price: 350,
-          description: "Zgjedhje e thjeshte dhe e shpejte.",
-          ingredients: "Patate, salce kosi, domate, qepe, pite.",
-          image: "images/dish-6.jpeg"
-        },
-        {
-          id: "gjiro-me-qofte",
-          name: "Gjiro me Qofte",
-          price: 450,
-          description: "Kombinim klasik me qofte dhe garnitura baze.",
-          ingredients: "Qofte, patate, salce kosi, domate, qepe, pite.",
-          image: "images/dish-2.jpeg"
-        },
-        {
-          id: "gjiro-mish-pule",
-          name: "Gjiro me Mish Pule",
-          price: 450,
-          description: "Produkt i qarte dhe i forte per menune kryesore.",
-          ingredients: "Mish pule, patate, salce kosi, domate, qepe, pite.",
-          image: "images/dish-1.jpeg"
-        },
-        {
-          id: "gjiro-mish-derri",
-          name: "Gjiro me Mish Derri",
-          price: 450,
-          description: "Variant klasik me mish derri dhe perberes baze.",
-          ingredients: "Mish derri, patate, salce kosi, domate, qepe, pite.",
-          image: "images/dish-3.jpeg"
-        }
-      ]
-    },
-    {
-      name: "Pjata",
-      items: [
-        {
-          id: "pjate-pule",
-          name: "Pjate me Mish Pule",
-          price: 650,
-          description: "Pjate e plote per dreke ose darke.",
-          ingredients: "Mish pule, patate, sallate, salce, buke ose pite.",
-          image: "images/dish-4.jpeg"
-        },
-        {
-          id: "pjate-qofte",
-          name: "Pjate me Qofte",
-          price: 650,
-          description: "Pjate e bollshme me strukture te qarte.",
-          ingredients: "Qofte, patate, sallate, salce, buke ose pite.",
-          image: "images/dish-5.jpeg"
-        },
-        {
-          id: "pjate-mix",
-          name: "Pjate Mix",
-          price: 750,
-          description: "Opsion i kombinuar per klientet qe duan me shume.",
-          ingredients: "Mish pule, qofte, patate, sallate, salce, buke ose pite.",
-          image: "images/dish-7.jpeg"
-        }
-      ]
-    },
-    {
-      name: "Shtesa",
-      items: [
-        {
-          id: "pite-shtese",
-          name: "Pite Shtese",
-          price: 30,
-          description: "Shtese per cdo produkt kryesor.",
-          ingredients: "Pite.",
-          image: "images/menu-1.jpeg"
-        },
-        {
-          id: "patate-shtese",
-          name: "Patate Shtese",
-          price: 50,
-          description: "Shtese e shpejte per gjiro ose pjate.",
-          ingredients: "Patate te skuqura.",
-          image: "images/menu-2.jpeg"
-        },
-        {
-          id: "salce-shtese",
-          name: "Salce Shtese",
-          price: 30,
-          description: "Shtese per shije dhe kombinim.",
-          ingredients: "Salce sipas zgjedhjes.",
-          image: "images/menu-3.jpeg"
-        }
-      ]
-    },
-    {
-      name: "Pije",
-      items: [
-        {
-          id: "uje",
-          name: "Uje",
-          price: 80,
-          description: "Pije baze.",
-          ingredients: "Uje.",
-          image: "images/menu-4.jpeg"
-        },
-        {
-          id: "coca-cola",
-          name: "Coca-Cola",
-          price: 150,
-          description: "Pije freskuese.",
-          ingredients: "Pije e gazuar.",
-          image: "images/menu-5.jpeg"
-        },
-        {
-          id: "fanta",
-          name: "Fanta",
-          price: 150,
-          description: "Pije freskuese me gaz.",
-          ingredients: "Pije e gazuar.",
-          image: "images/menu-6.jpeg"
-        }
-      ]
-    }
-  ]
+  featuredDishes: [],
+  menuCategories: []
 };
 
 
-
-function getTodayDateString() {
-  return new Date().toISOString().slice(0, 10);
-}
-
-function getActiveHotelDiscountPercent(siteData, dateStr = getTodayDateString()) {
-  const rules = Array.isArray(siteData.hotelDiscountRules) ? siteData.hotelDiscountRules : [];
-  const activeRule = rules.find(rule =>
-    rule &&
-    rule.active === true &&
-    Number(rule.percent) > 0 &&
-    typeof rule.startDate === "string" &&
-    typeof rule.endDate === "string" &&
-    rule.startDate <= dateStr &&
-    dateStr <= rule.endDate
-  );
-  return activeRule ? Number(activeRule.percent) : 0;
-}
-
-
-function hasDiscountRuleOverlap(rules) {
-  const normalized = (Array.isArray(rules) ? rules : [])
-    .filter(rule => rule && rule.active === true && rule.startDate && rule.endDate)
-    .map(rule => ({
-      id: rule.id,
-      startDate: rule.startDate,
-      endDate: rule.endDate
-    }))
-    .sort((a, b) => a.startDate.localeCompare(b.startDate));
-
-  for (let i = 0; i < normalized.length - 1; i++) {
-    const current = normalized[i];
-    const next = normalized[i + 1];
-    if (current.endDate >= next.startDate) {
-      return {
-        hasOverlap: true,
-        firstRuleId: current.id || "",
-        secondRuleId: next.id || ""
-      };
-    }
-  }
-
-  return { hasOverlap: false };
-}
-
-function validateSiteData(siteData) {
-  if (!siteData || typeof siteData !== "object") {
-    return { ok: false, error: "Invalid site data payload." };
-  }
-
-  const overlap = hasDiscountRuleOverlap(siteData.hotelDiscountRules);
-  if (overlap.hasOverlap) {
-    return {
-      ok: false,
-      error: `Hotel discount date overlap detected between rules "${overlap.firstRuleId}" and "${overlap.secondRuleId}".`
-    };
-  }
-
-  return { ok: true };
-}
-
-function buildOrderNotificationText(orderPayload) {
-  const itemLines = orderPayload.items.map(item => `- ${item.name} x${item.qty} = ${Number(item.price) * Number(item.qty)} L`).join("\n");
-  return `Porosi e re Romeo Grill
-
-Klienti: ${orderPayload.customerName || "-"}
-Telefoni: ${orderPayload.phone || "-"}
-Klient hoteli: ${orderPayload.isHotelGuest ? "Po" : "Jo"}
-Dhoma: ${orderPayload.roomNumber || "-"}
-Adresa: ${orderPayload.address || "-"}
-Shenime: ${orderPayload.notes || "-"}
-
-Artikujt:
-${itemLines}
-
-Nentotali: ${orderPayload.subtotal} L
-Ulja: ${orderPayload.discountAmount} L
-Totali: ${orderPayload.totalAmount} L`;
-}
-
-async function sendOrderNotifications(orderPayload) {
-  const text = buildOrderNotificationText(orderPayload);
-
-  const tasks = [];
-
-  if (mailer && process.env.NOTIFY_EMAIL_TO) {
-    tasks.push(
-      mailer.sendMail({
-        from: process.env.SMTP_FROM || process.env.SMTP_USER,
-        to: process.env.NOTIFY_EMAIL_TO,
-        subject: `Porosi e re Romeo Grill #${orderPayload.orderId}`,
-        text
-      }).catch(err => {
-        console.error("Email notification failed:", err.message);
-      })
-    );
-  }
-
-  if (smsClient && process.env.TWILIO_FROM_NUMBER && process.env.NOTIFY_SMS_TO) {
-    tasks.push(
-      smsClient.messages.create({
-        body: text.slice(0, 1500),
-        from: process.env.TWILIO_FROM_NUMBER,
-        to: process.env.NOTIFY_SMS_TO
-      }).catch(err => {
-        console.error("SMS notification failed:", err.message);
-      })
-    );
-  }
-
-  await Promise.all(tasks);
-}
-
+// --- Validation helpers ---
 
 function isNonEmptyString(value, min = 1, max = 255) {
   return typeof value === "string" && value.trim().length >= min && value.trim().length <= max;
@@ -379,7 +91,6 @@ function normalizeSiteData(data) {
     ...data,
     featuredDishes: Array.isArray(data.featuredDishes) ? data.featuredDishes : [],
     menuCategories: Array.isArray(data.menuCategories) ? data.menuCategories : [],
-    hotelDiscountRules: Array.isArray(data.hotelDiscountRules) ? data.hotelDiscountRules : [],
     storyImages: Array.isArray(data.storyImages) ? data.storyImages : []
   };
 }
@@ -388,12 +99,27 @@ function validateDish(item, context = "dish") {
   if (!item || typeof item !== "object") return `${context}: invalid object`;
   if (!isNonEmptyString(item.id, 1, 80)) return `${context}: invalid id`;
   if (!isNonEmptyString(item.name, 2, 120)) return `${context}: invalid name`;
-  if (!Number.isFinite(Number(item.price)) || Number(item.price) < 0 || Number(item.price) > 100000) return `${context}: invalid price`;
-  if (!isNonEmptyString(item.description, 3, 500)) return `${context}: invalid description`;
-  if (item.ingredients !== undefined && !(typeof item.ingredients === "string" && item.ingredients.length <= 1000)) return `${context}: invalid ingredients`;
+  if (!Number.isFinite(Number(item.price)) || Number(item.price) < 0) return `${context}: invalid price`;
+  if (!isNonEmptyString(item.description, 0, 1000)) return `${context}: invalid description`;
   if (!isSafeImagePath(item.image)) return `${context}: invalid image path`;
+
+  if (item.gallery && Array.isArray(item.gallery)) {
+    if (item.gallery.length > 10) return `${context}: max 10 gallery photos`;
+    for (let p of item.gallery) if (!isSafeImagePath(p)) return `${context}: invalid gallery path`;
+  }
   return null;
 }
+
+function resolveAssetPath(src, req) {
+  if (!src) return "";
+  if (src.startsWith('http') || src.startsWith('data:')) return src;
+  const protocol = req.protocol || 'http';
+  const host = req.get('host') || 'localhost:3000';
+  let cleanPath = src.replace(/^\.\.\//, ''); // Remove leading ../
+  if (!cleanPath.startsWith('/')) cleanPath = '/' + cleanPath;
+  return `${protocol}://${host}${cleanPath}`;
+}
+
 
 function validateSiteData(data) {
   if (!data || typeof data !== "object") {
@@ -458,65 +184,14 @@ function validateSiteData(data) {
       const err = validateDish(category.items[j], `menu item "${category.name}" #${j + 1}`);
       if (err) return { ok: false, error: err };
     }
-  }
-
-  const overlap = hasDiscountRuleOverlap(siteData.hotelDiscountRules);
-  if (overlap.hasOverlap) {
-    return {
-      ok: false,
-      error: `Hotel discount date overlap detected between rules "${overlap.firstRuleId}" and "${overlap.secondRuleId}".`
-    };
-  }
-
-  for (let i = 0; i < siteData.hotelDiscountRules.length; i++) {
-    const rule = siteData.hotelDiscountRules[i];
-    if (!isNonEmptyString(rule.id, 1, 120)) return { ok: false, error: `Invalid hotel discount rule id at position ${i + 1}.` };
-    if (!isNonEmptyString(rule.label, 2, 120)) return { ok: false, error: `Invalid hotel discount rule label at position ${i + 1}.` };
-    if (!Number.isFinite(Number(rule.percent)) || Number(rule.percent) < 0 || Number(rule.percent) > 100) return { ok: false, error: `Invalid hotel discount percent at position ${i + 1}.` };
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(rule.startDate) || !/^\d{4}-\d{2}-\d{2}$/.test(rule.endDate)) return { ok: false, error: `Invalid hotel discount dates at position ${i + 1}.` };
-    if (rule.startDate > rule.endDate) return { ok: false, error: `Hotel discount rule "${rule.label}" has start date after end date.` };
+    is
   }
 
   return { ok: true };
 }
 
-function validateOrderPayload(body, siteData) {
-  if (!body || typeof body !== "object") return { ok: false, error: "Invalid order payload." };
 
-  const {
-    customerName = "",
-    phone = "",
-    roomNumber = "",
-    address = "",
-    notes = "",
-    isHotelGuest = false,
-    items = []
-  } = body;
-
-  if (!isNonEmptyString(customerName, 2, 120)) return { ok: false, error: "Invalid customer name." };
-  if (!isSafePhone(phone)) return { ok: false, error: "Invalid phone number." };
-  if (!isNonEmptyString(address, 3, 200)) return { ok: false, error: "Invalid address or hotel field." };
-  if (typeof notes !== "string" || notes.length > 1000) return { ok: false, error: "Invalid notes." };
-  if (isHotelGuest && !isNonEmptyString(roomNumber, 1, 20)) return { ok: false, error: "Room number is required for hotel guests." };
-  if (!Array.isArray(items) || items.length === 0 || items.length > 100) return { ok: false, error: "Order items are required." };
-
-  const allowedItems = new Map();
-  (siteData.menuCategories || []).forEach(category => {
-    (category.items || []).forEach(item => {
-      allowedItems.set(item.id, item);
-    });
-  });
-
-  for (const item of items) {
-    if (!item || !isNonEmptyString(item.id, 1, 80)) return { ok: false, error: "Invalid order item id." };
-    if (!Number.isInteger(Number(item.qty)) || Number(item.qty) < 1 || Number(item.qty) > 50) return { ok: false, error: `Invalid quantity for item ${item.id}.` };
-    const allowed = allowedItems.get(item.id);
-    if (!allowed) return { ok: false, error: `Unknown item id: ${item.id}.` };
-    if (Number(item.price) !== Number(allowed.price)) return { ok: false, error: `Price mismatch for item ${item.id}.` };
-  }
-
-  return { ok: true };
-}
+// --- Database ---
 
 function initDb() {
   db.exec(`
@@ -532,21 +207,13 @@ function initDb() {
       created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
 
-    CREATE TABLE IF NOT EXISTS orders (
+    CREATE TABLE IF NOT EXISTS page_views (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      customer_name TEXT,
-      phone TEXT,
-      room_number TEXT,
-      address TEXT,
-      notes TEXT,
-      is_hotel_guest INTEGER NOT NULL DEFAULT 0,
-      hotel_discount_percent INTEGER NOT NULL DEFAULT 0,
-      subtotal INTEGER NOT NULL DEFAULT 0,
-      discount_amount INTEGER NOT NULL DEFAULT 0,
-      total_amount INTEGER NOT NULL DEFAULT 0,
-      items_json TEXT NOT NULL,
-      status TEXT NOT NULL DEFAULT 'new',
-      created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+      path TEXT NOT NULL,
+      ip TEXT,
+      user_agent TEXT,
+      visited_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      date_key TEXT NOT NULL
     );
   `);
 
@@ -563,7 +230,7 @@ function initDb() {
     }
     const hash = bcrypt.hashSync(rawPassword, 10);
     db.prepare("INSERT INTO admin_users (username, password_hash) VALUES (?, ?)").run(process.env.ADMIN_USERNAME || "admin", hash);
-    console.log("Default admin created:");
+    console.log("Default admin created.");
     console.log("Username:", process.env.ADMIN_USERNAME || "admin");
     console.log("Password:", rawPassword);
     console.log("Change it immediately in production.");
@@ -592,6 +259,8 @@ function requireAdmin(req, res, next) {
 initDb();
 
 
+// --- Middleware ---
+
 app.set("trust proxy", 1);
 
 app.use(helmet({
@@ -615,14 +284,6 @@ const adminWriteLimiter = rateLimit({
   message: { error: "Too many admin write requests. Try again later." }
 });
 
-const orderLimiter = rateLimit({
-  windowMs: 10 * 60 * 1000,
-  max: 60,
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { error: "Too many order attempts. Try again later." }
-});
-
 app.use(express.json({ limit: "2mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
@@ -639,12 +300,86 @@ app.use(session({
   }
 }));
 
+// --- SEO Interceptor ---
+function renderProductSEO(req, res, next, filepath) {
+  const dishId = req.query.id;
+  if (!dishId) return next();
+
+  const siteData = getSiteData();
+  let foundDish = null;
+
+  if (siteData.featuredDishes) {
+    foundDish = siteData.featuredDishes.find(d => d.id === dishId);
+  }
+  if (!foundDish && siteData.menuCategories) {
+    for (const cat of siteData.menuCategories) {
+      if (cat.items) {
+        const item = cat.items.find(d => d.id === dishId);
+        if (item) { foundDish = item; break; }
+      }
+    }
+  }
+
+  if (!foundDish) return next();
+
+  fs.readFile(filepath, 'utf8', (err, html) => {
+    if (err) return next();
+
+    const brandName = siteData.brandTitle || 'Romeo Grill';
+    const pageTitle = `${brandName} | ${foundDish.name}`;
+    const desc = foundDish.description || '';
+    const ogImage = resolveAssetPath(foundDish.image, req);
+
+    const ogTags = `
+      <meta property="og:title" content="${pageTitle.replace(/"/g, '&quot;')}">
+      <meta property="og:description" content="${desc.replace(/"/g, '&quot;')}">
+      <meta property="og:image" content="${ogImage}">
+      <meta property="og:type" content="product">
+      <meta name="twitter:card" content="summary_large_image">
+    `;
+
+    // Overwrite the existing generic title and inject OG tags
+    let modifiedHtml = html.replace(/<title>.*?<\/title>/i, `<title>${pageTitle}</title>`);
+    modifiedHtml = modifiedHtml.replace('</head>', `${ogTags}\n</head>`);
+    res.set('Content-Type', 'text/html').send(modifiedHtml);
+
+  });
+}
+
+app.get('/product.html', (req, res, next) => renderProductSEO(req, res, next, path.join(__dirname, "public", "product.html")));
+app.get('/en/product.html', (req, res, next) => renderProductSEO(req, res, next, path.join(__dirname, "public", "en", "product.html")));
+
 app.use(express.static(path.join(__dirname, "public")));
+
+
+// --- Visitor tracking middleware ---
+
+const trackedPaths = new Set(["/", "/en/"]);
+
+app.use((req, res, next) => {
+  if (req.method === "GET" && trackedPaths.has(req.path)) {
+    try {
+      const dateKey = new Date().toISOString().slice(0, 10);
+      const ip = req.ip || req.connection.remoteAddress || "";
+      const ua = (req.headers["user-agent"] || "").slice(0, 300);
+      db.prepare("INSERT INTO page_views (path, ip, user_agent, date_key) VALUES (?, ?, ?, ?)")
+        .run(req.path, ip, ua, dateKey);
+    } catch (e) {
+      // silent fail — don't break the page for tracking
+    }
+  }
+  next();
+});
+
+
+// --- Public API ---
 
 app.get("/api/site-data", (req, res) => {
   res.json(getSiteData());
 });
 
+
+// --- Admin API ---
 
 app.post("/api/admin/login", loginLimiter, (req, res) => {
   const { username, password } = req.body;
@@ -685,8 +420,43 @@ app.put("/api/admin/site-data", requireAdmin, adminWriteLimiter, (req, res) => {
   res.json({ success: true });
 });
 
+app.post("/api/admin/change-password", requireAdmin, adminWriteLimiter, (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  if (!currentPassword || !newPassword) {
+    return res.status(400).json({ error: "Both current and new password are required." });
+  }
+  if (newPassword.length < 8) {
+    return res.status(400).json({ error: "New password must be at least 8 characters." });
+  }
+  const user = db.prepare("SELECT * FROM admin_users WHERE id = ?").get(req.session.adminUser.id);
+  if (!user || !bcrypt.compareSync(currentPassword, user.password_hash)) {
+    return res.status(401).json({ error: "Current password is incorrect." });
+  }
+  const newHash = bcrypt.hashSync(newPassword, 10);
+  db.prepare("UPDATE admin_users SET password_hash = ? WHERE id = ?").run(newHash, user.id);
+  res.json({ success: true });
+});
 
+app.get("/api/admin/analytics", requireAdmin, (req, res) => {
+  const today = new Date().toISOString().slice(0, 10);
+  const d7 = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);
+  const d30 = new Date(Date.now() - 30 * 86400000).toISOString().slice(0, 10);
 
+  const totalViews = db.prepare("SELECT COUNT(*) as count FROM page_views").get().count;
+  const todayViews = db.prepare("SELECT COUNT(*) as count FROM page_views WHERE date_key = ?").get(today).count;
+  const weekViews = db.prepare("SELECT COUNT(*) as count FROM page_views WHERE date_key >= ?").get(d7).count;
+  const monthViews = db.prepare("SELECT COUNT(*) as count FROM page_views WHERE date_key >= ?").get(d30).count;
+
+  const dailyData = db.prepare(
+    "SELECT date_key as date, COUNT(*) as views FROM page_views WHERE date_key >= ? GROUP BY date_key ORDER BY date_key"
+  ).all(d30);
+
+  const topPages = db.prepare(
+    "SELECT path, COUNT(*) as views FROM page_views WHERE date_key >= ? GROUP BY path ORDER BY views DESC LIMIT 10"
+  ).all(d30);
+
+  res.json({ totalViews, todayViews, weekViews, monthViews, dailyData, topPages });
+});
 
 app.post("/api/admin/upload-image", requireAdmin, adminWriteLimiter, upload.single("image"), (req, res) => {
   if (!req.file) {
@@ -697,6 +467,9 @@ app.post("/api/admin/upload-image", requireAdmin, adminWriteLimiter, upload.sing
     path: `/uploads/${req.file.filename}`
   });
 });
+
+
+// --- Page routes ---
 
 app.get("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "admin-login.html"));
@@ -710,6 +483,8 @@ app.get("/en/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "en", "index.html"));
 });
 
+
+// --- Error handler ---
 
 app.use((err, _req, res, _next) => {
   if (err && err.message === "Only image uploads are allowed.") {

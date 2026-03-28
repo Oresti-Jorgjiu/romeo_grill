@@ -1,213 +1,41 @@
+let currentSiteData = null;
 
 const defaultSiteData = {
   brandTitle: "Romeo Grill",
   brandSub: "Korce, Albania",
   heroBadge: "Fast Food • Grill • Gjiro",
   heroTitle: "Romeo Grill",
-  heroDescription: "Grill, gjiro dhe pjata te nxehta ne zemer te Korces. Menu e ndare qarte me cmime te hapura — zgjedh kategorine, kliko produktin dhe shiko perberesit e plote.",
+  heroDescription: "",
   heroImage: "images/storefront.jpeg",
-  aboutTag: "Menu e qarte, jo rremuje",
-  aboutTitle: "Kategorite hapen thjesht, artikujt shihen qarte, detajet dalin me nje klikim.",
-  aboutLead: "Tek Romeo Grill gjeni gjiro, pjata grilli dhe shtesa me cmime te dukshme. Zgjidhni kategorine, shikoni artikujt dhe klikoni produktin per te pare foton, perberesit dhe detajet e plota.",
-  aboutDescription: "Jemi te hapur cdo dite 09:00 – 23:00. Mund te kontaktoni direkt ne WhatsApp ose telefon per informacion shtese. Lokacioni yne eshte lehtesisht i arritshem ne qender te Korces.",
+  aboutTag: "",
+  aboutTitle: "",
+  aboutLead: "",
+  aboutDescription: "",
   contactAddress: "Korce, Albania",
   contactPhone: "0696930010",
   contactHours: "09:00 - 23:00",
   contactInstagram: "@romeogrill2024",
   contactFacebook: "Romeo Grill",
-  mapLink: "https://maps.app.goo.gl/T1pQtM8KqkLht8pB6",
-  instagramLink: "https://www.instagram.com/romeogrill2024/",
-  facebookLink: "https://www.facebook.com/romeo.grill.3/",
+  mapLink: "",
+  instagramLink: "",
+  facebookLink: "",
   whatsappNumber: "0696472338",
-  hotelDiscountRules: [],
-  menuPageTitle: "Menuja e Romeo Grill — Gjiro, Grill & Fast Food",
-  menuPageDescription: "Zgjidhni kategorine, shikoni artikujt me cmimet e tyre dhe klikoni produktin per te pare foton, perberesit dhe detajet e plota.",
-  storyImages: [
-    "images/dish-4.jpeg",
-    "images/dish-5.jpeg",
-    "images/dish-6.jpeg",
-    "images/dish-7.jpeg"
-  ],
-  featuredDishes: [
-    {
-      id: "gjiro-mish-pule",
-      name: "Gjiro me Mish Pule",
-      price: 450,
-      description: "Nje nga zgjedhjet me te kerkuara, me strukture te qarte dhe perberes te dukshem.",
-      image: "images/dish-1.jpeg"
-    },
-    {
-      id: "gjiro-me-qofte",
-      name: "Gjiro me Qofte",
-      price: 450,
-      description: "Opsion klasik per klientet qe duan shije me te forte dhe kombinim te plote.",
-      image: "images/dish-2.jpeg"
-    },
-    {
-      id: "gjiro-mish-derri",
-      name: "Gjiro me Mish Derri",
-      price: 450,
-      description: "Produkt baze i menuse qe duhet te gjendet shpejt dhe te shfaqe qarte perberesit.",
-      image: "images/dish-8.jpeg"
-    }
-  ],
-  menuCategories: [
-    {
-      name: "Gjiro",
-      items: [
-        {
-          id: "gjiro-patate",
-          name: "Gjiro me Patate",
-          price: 350,
-          description: "Zgjedhje e thjeshte dhe e shpejte.",
-          ingredients: "Patate, salce kosi, domate, qepe, pite.",
-          image: "images/dish-6.jpeg"
-        },
-        {
-          id: "gjiro-me-qofte",
-          name: "Gjiro me Qofte",
-          price: 450,
-          description: "Kombinim klasik me qofte dhe garnitura baze.",
-          ingredients: "Qofte, patate, salce kosi, domate, qepe, pite.",
-          image: "images/dish-2.jpeg"
-        },
-        {
-          id: "gjiro-mish-pule",
-          name: "Gjiro me Mish Pule",
-          price: 450,
-          description: "Produkt i qarte dhe i forte per menune kryesore.",
-          ingredients: "Mish pule, patate, salce kosi, domate, qepe, pite.",
-          image: "images/dish-1.jpeg"
-        },
-        {
-          id: "gjiro-mish-derri",
-          name: "Gjiro me Mish Derri",
-          price: 450,
-          description: "Variant klasik me mish derri dhe perberes baze.",
-          ingredients: "Mish derri, patate, salce kosi, domate, qepe, pite.",
-          image: "images/dish-3.jpeg"
-        }
-      ]
-    },
-    {
-      name: "Pjata",
-      items: [
-        {
-          id: "pjate-pule",
-          name: "Pjate me Mish Pule",
-          price: 650,
-          description: "Pjate e plote per dreke ose darke.",
-          ingredients: "Mish pule, patate, sallate, salce, buke ose pite.",
-          image: "images/dish-4.jpeg"
-        },
-        {
-          id: "pjate-qofte",
-          name: "Pjate me Qofte",
-          price: 650,
-          description: "Pjate e bollshme me strukture te qarte.",
-          ingredients: "Qofte, patate, sallate, salce, buke ose pite.",
-          image: "images/dish-5.jpeg"
-        },
-        {
-          id: "pjate-mix",
-          name: "Pjate Mix",
-          price: 750,
-          description: "Opsion i kombinuar per klientet qe duan me shume.",
-          ingredients: "Mish pule, qofte, patate, sallate, salce, buke ose pite.",
-          image: "images/dish-7.jpeg"
-        }
-      ]
-    },
-    {
-      name: "Shtesa",
-      items: [
-        {
-          id: "pite-shtese",
-          name: "Pite Shtese",
-          price: 30,
-          description: "Shtese per cdo produkt kryesor.",
-          ingredients: "Pite.",
-          image: "images/menu-1.jpeg"
-        },
-        {
-          id: "patate-shtese",
-          name: "Patate Shtese",
-          price: 50,
-          description: "Shtese e shpejte per gjiro ose pjate.",
-          ingredients: "Patate te skuqura.",
-          image: "images/menu-2.jpeg"
-        },
-        {
-          id: "salce-shtese",
-          name: "Salce Shtese",
-          price: 30,
-          description: "Shtese per shije dhe kombinim.",
-          ingredients: "Salce sipas zgjedhjes.",
-          image: "images/menu-3.jpeg"
-        }
-      ]
-    },
-    {
-      name: "Pije",
-      items: [
-        {
-          id: "uje",
-          name: "Uje",
-          price: 80,
-          description: "Pije baze.",
-          ingredients: "Uje.",
-          image: "images/menu-4.jpeg"
-        },
-        {
-          id: "coca-cola",
-          name: "Coca-Cola",
-          price: 150,
-          description: "Pije freskuese.",
-          ingredients: "Pije e gazuar.",
-          image: "images/menu-5.jpeg"
-        },
-        {
-          id: "fanta",
-          name: "Fanta",
-          price: 150,
-          description: "Pije freskuese me gaz.",
-          ingredients: "Pije e gazuar.",
-          image: "images/menu-6.jpeg"
-        }
-      ]
-    }
-  ]
+  menuPageTitle: "",
+  menuPageDescription: "",
+  storyImages: [],
+  featuredDishes: [],
+  menuCategories: []
 };
 
 
-function byId(id) { return document.getElementById(id); }
+// --- Helpers ---
 
-function isNonEmptyString(value, min = 1, max = 255) {
-  return typeof value === "string" && value.trim().length >= min && value.trim().length <= max;
+function byId(id) {
+  return document.getElementById(id);
 }
 
-function isSafeImagePath(value) {
-  return typeof value === "string" && /^\/?(images|uploads)\/[a-zA-Z0-9._\-\/]+$/.test(value.trim());
-}
 
-function validateAdminFormData(data) {
-  if (!isNonEmptyString(data.brandTitle, 2, 80)) return { ok: false, error: "Brand title eshte i pavlefshem." };
-  if (!isSafeImagePath(data.heroImage)) return { ok: false, error: "Hero image path eshte i pavlefshem." };
-  if (!isNonEmptyString(data.contactPhone, 6, 30)) return { ok: false, error: "Telefoni eshte i pavlefshem." };
-  if (!isNonEmptyString(data.contactFacebook, 2, 120)) return { ok: false, error: "Facebook label eshte i pavlefshem." };
-  if (!isNonEmptyString(data.mapLink, 10, 500)) return { ok: false, error: "Google Maps link eshte i pavlefshem." };
-  if (!isNonEmptyString(data.instagramLink, 10, 500)) return { ok: false, error: "Instagram link eshte i pavlefshem." };
-  if (!isNonEmptyString(data.facebookLink, 10, 500)) return { ok: false, error: "Facebook link eshte i pavlefshem." };
-  if (!isNonEmptyString(data.whatsappNumber, 6, 20)) return { ok: false, error: "WhatsApp number eshte i pavlefshem." };
-
-  const overlap = hasDiscountRuleOverlapClient(data.hotelDiscountRules);
-  if (overlap.hasOverlap) {
-    return { ok: false, error: `Ka overlap midis "${overlap.firstRuleId}" dhe "${overlap.secondRuleId}".` };
-  }
-
-  return { ok: true };
-}
-
+// --- API ---
 
 async function fetchMe() {
   const res = await fetch('/api/admin/me');
@@ -220,7 +48,11 @@ async function fetchSiteData() {
   return res.json();
 }
 
-
+async function fetchAnalytics() {
+  const res = await fetch('/api/admin/analytics');
+  if (!res.ok) throw new Error('Failed to fetch analytics');
+  return res.json();
+}
 
 async function login(username, password) {
   const res = await fetch('/api/admin/login', {
@@ -248,85 +80,262 @@ async function saveSiteData(data) {
 async function uploadImage(file) {
   const formData = new FormData();
   formData.append('image', file);
-
   const res = await fetch('/api/admin/upload-image', {
     method: 'POST',
     body: formData
   });
+  return { ok: res.ok, data: await res.json() };
+}
 
+async function changePassword(currentPassword, newPassword) {
+  const res = await fetch('/api/admin/change-password', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ currentPassword, newPassword })
+  });
   return { ok: res.ok, data: await res.json() };
 }
 
 
+// --- Tab Navigation ---
+
+function initTabs() {
+  const tabs = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.tab-panel');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      const target = document.getElementById(`tab-${tab.dataset.tab}`);
+      if (target) target.classList.add('active');
+    });
+  });
+}
+
+
+// --- Analytics ---
+
+function renderAnalytics(data) {
+  byId('statToday').textContent = data.todayViews.toLocaleString();
+  byId('statWeek').textContent = data.weekViews.toLocaleString();
+  byId('statMonth').textContent = data.monthViews.toLocaleString();
+  byId('statTotal').textContent = data.totalViews.toLocaleString();
+
+  // Bar chart
+  const chartContainer = byId('dailyChart');
+  if (chartContainer && data.dailyData.length > 0) {
+    const maxViews = Math.max(...data.dailyData.map(d => d.views), 1);
+    chartContainer.innerHTML = data.dailyData.map(d => {
+      const height = Math.max((d.views / maxViews) * 180, 2);
+      const dateLabel = d.date.slice(5); // MM-DD
+      return `
+        <div class="chart-bar-wrap" title="${d.date}: ${d.views} views">
+          <div class="chart-bar" style="height:${height}px"></div>
+          <span class="chart-date">${dateLabel}</span>
+        </div>
+      `;
+    }).join('');
+  } else if (chartContainer) {
+    chartContainer.innerHTML = '<p class="muted" style="margin:auto;">No data yet. Views will appear here once visitors start browsing.</p>';
+  }
+
+  // Top pages
+  const topPagesEl = byId('topPages');
+  if (topPagesEl && data.topPages.length > 0) {
+    topPagesEl.innerHTML = data.topPages.map(p => `
+      <div class="top-page-row">
+        <span>${p.path}</span>
+        <span>${p.views} views</span>
+      </div>
+    `).join('');
+  } else if (topPagesEl) {
+    topPagesEl.innerHTML = '<p class="muted">No page data yet.</p>';
+  }
+}
+
+
+// --- Form rendering ---
 
 function fillBasicInputs(data) {
-  byId('brandTitleInput').value = data.brandTitle || '';
-  byId('brandSubInput').value = data.brandSub || '';
-  byId('heroBadgeInput').value = data.heroBadge || '';
-  byId('heroTitleInput').value = data.heroTitle || '';
-  byId('heroDescriptionInput').value = data.heroDescription || '';
-  byId('heroImageInput').value = data.heroImage || '';
-  byId('addressInput').value = data.contactAddress || '';
-  byId('phoneInput').value = data.contactPhone || '';
-  byId('hoursInput').value = data.contactHours || '';
-  byId('instagramInput').value = data.contactInstagram || '';
-  byId('facebookInput').value = data.contactFacebook || '';
-  byId('mapLinkInput').value = data.mapLink || '';
-  byId('instagramLinkInput').value = data.instagramLink || '';
-  byId('facebookLinkInput').value = data.facebookLink || '';
-  byId('whatsappInput').value = data.whatsappNumber || '';
-  byId('aboutTagInput').value = data.aboutTag || '';
-  byId('aboutTitleInput').value = data.aboutTitle || '';
-  byId('aboutLeadInput').value = data.aboutLead || '';
-  byId('aboutDescriptionInput').value = data.aboutDescription || '';
-  byId('menuPageTitleInput').value = data.menuPageTitle || '';
-  byId('menuPageDescriptionInput').value = data.menuPageDescription || '';
-  byId('storyImage1').value = data.storyImages?.[0] || '';
-  byId('storyImage2').value = data.storyImages?.[1] || '';
-  byId('storyImage3').value = data.storyImages?.[2] || '';
-  byId('storyImage4').value = data.storyImages?.[3] || '';
+  // Not needed anymore since we removed the Website Content tab.
 }
 
 function createFeaturedEditor(item, index) {
   const div = document.createElement('div');
   div.className = 'repeat-card';
+  const galStr = (item.gallery || []).join(',');
   div.innerHTML = `
     <div class="repeat-header">
-      <h4>Pjate Kryesore ${index + 1}</h4>
-      <button type="button" class="btn btn-secondary small-btn remove-featured">Hiq</button>
+      <h4>Featured Dish ${index + 1}</h4>
+      <button type="button" class="btn btn-secondary small-btn remove-featured">Remove</button>
     </div>
     <div class="admin-grid two">
       <input class="featured-id" placeholder="ID" value="${item.id || ''}">
-      <input class="featured-name" placeholder="Emri" value="${item.name || ''}">
-      <input class="featured-price" type="number" placeholder="Cmimi" value="${item.price || 0}">
-      <input class="featured-image" placeholder="Path i imazhit" value="${item.image || ''}">
-      <textarea class="featured-description" rows="3" placeholder="Pershkrimi">${item.description || ''}</textarea>
+      <input class="featured-name" placeholder="Name" value="${item.name || ''}">
+      <input class="featured-price" type="number" placeholder="Price" value="${item.price || 0}">
+      <textarea class="featured-description" rows="3" placeholder="Description" style="grid-column: span 2;">${item.description || ''}</textarea>
+    </div>
+    <div class="inline-gallery" style="margin-top: 16px; padding: 12px; background: rgba(0,0,0,0.2); border-radius: 8px;">
+      <h5 style="margin-top:0; margin-bottom: 8px; font-size: 0.85rem; color: #aaa;">Photos (Main & Gallery)</h5>
+      <input type="hidden" class="featured-image" value="${item.image || ''}">
+      <input type="hidden" class="featured-gallery" value="${galStr}">
+      
+      <div class="gallery-previews" style="display:flex; gap:8px; overflow-x:auto; padding-bottom:8px; margin-bottom: 8px;">
+        ${item.image ? `<div class="preview" style="position:relative; width:80px; height:80px; flex-shrink:0; border-radius:8px; overflow:hidden; border:2px solid #ff8d2a;"><img src="${item.image}" style="width:100%; height:100%; object-fit:cover;"><button type="button" class="rm-img-btn" data-target="main" style="position:absolute; top:4px; right:4px; background:red; color:white; border:none; border-radius:50%; width:20px; height:20px; cursor:pointer;" title="Remove Main Photo">x</button><span style="position:absolute; bottom:0; left:0; right:0; background:rgba(255,141,42,0.8); color:#000; font-size:10px; text-align:center; font-weight:bold;">MAIN</span></div>` : ''}
+        ${(item.gallery || []).map(g => `<div class="preview" style="position:relative; width:80px; height:80px; flex-shrink:0; border-radius:8px; overflow:hidden;"><img src="${g}" style="width:100%; height:100%; object-fit:cover;"><button type="button" class="rm-img-btn" data-target="gallery" data-src="${g}" style="position:absolute; top:4px; right:4px; background:red; color:white; border:none; border-radius:50%; width:20px; height:20px; cursor:pointer;" title="Remove Photo">x</button></div>`).join('')}
+      </div>
+      
+      <div style="display:flex; gap:8px;">
+        <input type="file" class="item-file-input" accept="image/*" multiple>
+        <button type="button" class="btn btn-primary small-btn upload-inline-btn" style="flex-shrink:0;">Upload Selected</button>
+      </div>
     </div>
   `;
-  div.querySelector('.remove-featured').addEventListener('click', () => { div.remove(); updatePreview(); });
-  div.querySelectorAll('input, textarea').forEach(el => el.addEventListener('input', updatePreview));
+  
+  div.querySelector('.remove-featured').addEventListener('click', () => div.remove());
+  
+  const uploadBtn = div.querySelector('.upload-inline-btn');
+  const fileInput = div.querySelector('.item-file-input');
+  uploadBtn.addEventListener('click', async () => {
+    const files = fileInput.files;
+    if (!files.length) return alert('Select files first');
+    uploadBtn.textContent = 'Uploading...';
+    uploadBtn.disabled = true;
+    
+    let currentMain = div.querySelector('.featured-image').value;
+    let currentGalStr = div.querySelector('.featured-gallery').value;
+    let currentGal = currentGalStr ? currentGalStr.split(',') : [];
+    
+    for (const file of files) {
+      if (!file.type.startsWith('image/')) continue;
+      const res = await uploadImage(file);
+      if (res.ok && res.data.path) {
+        if (!currentMain) {
+          currentMain = res.data.path;
+        } else {
+          currentGal.push(res.data.path);
+        }
+      }
+    }
+    
+    div.querySelector('.featured-image').value = currentMain;
+    div.querySelector('.featured-gallery').value = currentGal.join(',');
+    
+    alert('Uploaded! Please hit Save Everything at the bottom to refresh the UI.');
+    uploadBtn.textContent = 'Upload Selected';
+    uploadBtn.disabled = false;
+    fileInput.value = '';
+  });
+  
+  const previews = div.querySelector('.gallery-previews');
+  previews.addEventListener('click', (e) => {
+    if (e.target.classList.contains('rm-img-btn')) {
+      const type = e.target.dataset.target;
+      if (type === 'main') {
+        div.querySelector('.featured-image').value = '';
+        e.target.closest('.preview').remove();
+      } else {
+        const src = e.target.dataset.src;
+        let currentGalStr = div.querySelector('.featured-gallery').value;
+        let currentGal = currentGalStr ? currentGalStr.split(',') : [];
+        currentGal = currentGal.filter(g => g !== src);
+        div.querySelector('.featured-gallery').value = currentGal.join(',');
+        e.target.closest('.preview').remove();
+      }
+    }
+  });
+
   return div;
 }
 
 function createMenuItemEditor(item, itemIndex) {
   const div = document.createElement('div');
   div.className = 'repeat-card';
+  const galStr = (item.gallery || []).join(',');
   div.innerHTML = `
     <div class="repeat-header">
-      <h4>Artikull ${itemIndex + 1}</h4>
-      <button type="button" class="btn btn-secondary small-btn remove-item">Hiq</button>
+      <h4>Item ${itemIndex + 1}</h4>
+      <button type="button" class="btn btn-secondary small-btn remove-item">Remove</button>
     </div>
     <div class="admin-grid two">
       <input class="item-id" placeholder="ID" value="${item.id || ''}">
-      <input class="item-name" placeholder="Emri" value="${item.name || ''}">
-      <input class="item-price" type="number" placeholder="Cmimi" value="${item.price || 0}">
-      <input class="item-image" placeholder="Path i imazhit" value="${item.image || ''}">
-      <textarea class="item-description" rows="3" placeholder="Pershkrimi">${item.description || ''}</textarea>
-      <textarea class="item-ingredients" rows="3" placeholder="Perberesit">${item.ingredients || ''}</textarea>
+      <input class="item-name" placeholder="Name" value="${item.name || ''}">
+      <input class="item-price" type="number" placeholder="Price" value="${item.price || 0}">
+      <textarea class="item-description" rows="3" placeholder="Description">${item.description || ''}</textarea>
+      <textarea class="item-ingredients" rows="3" placeholder="Ingredients" style="grid-column: span 2;">${item.ingredients || ''}</textarea>
+    </div>
+    <div class="inline-gallery" style="margin-top: 16px; padding: 12px; background: rgba(0,0,0,0.2); border-radius: 8px;">
+      <h5 style="margin-top:0; margin-bottom: 8px; font-size: 0.85rem; color: #aaa;">Photos (Main & Gallery)</h5>
+      <input type="hidden" class="item-image" value="${item.image || ''}">
+      <input type="hidden" class="item-gallery" value="${galStr}">
+      
+      <div class="gallery-previews" style="display:flex; gap:8px; overflow-x:auto; padding-bottom:8px; margin-bottom: 8px;">
+        ${item.image ? `<div class="preview" style="position:relative; width:80px; height:80px; flex-shrink:0; border-radius:8px; overflow:hidden; border:2px solid #ff8d2a;"><img src="${item.image}" style="width:100%; height:100%; object-fit:cover;"><button type="button" class="rm-img-btn" data-target="main" style="position:absolute; top:4px; right:4px; background:red; color:white; border:none; border-radius:50%; width:20px; height:20px; cursor:pointer;" title="Remove Main Photo">x</button><span style="position:absolute; bottom:0; left:0; right:0; background:rgba(255,141,42,0.8); color:#000; font-size:10px; text-align:center; font-weight:bold;">MAIN</span></div>` : ''}
+        ${(item.gallery || []).map(g => `<div class="preview" style="position:relative; width:80px; height:80px; flex-shrink:0; border-radius:8px; overflow:hidden;"><img src="${g}" style="width:100%; height:100%; object-fit:cover;"><button type="button" class="rm-img-btn" data-target="gallery" data-src="${g}" style="position:absolute; top:4px; right:4px; background:red; color:white; border:none; border-radius:50%; width:20px; height:20px; cursor:pointer;" title="Remove Photo">x</button></div>`).join('')}
+      </div>
+      
+      <div style="display:flex; gap:8px;">
+        <input type="file" class="item-file-input" accept="image/*" multiple>
+        <button type="button" class="btn btn-primary small-btn upload-inline-btn" style="flex-shrink:0;">Upload Selected</button>
+      </div>
     </div>
   `;
-  div.querySelector('.remove-item').addEventListener('click', () => { div.remove(); updatePreview(); });
-  div.querySelectorAll('input, textarea').forEach(el => el.addEventListener('input', updatePreview));
+  
+  div.querySelector('.remove-item').addEventListener('click', () => div.remove());
+  
+  const uploadBtn = div.querySelector('.upload-inline-btn');
+  const fileInput = div.querySelector('.item-file-input');
+  uploadBtn.addEventListener('click', async () => {
+    const files = fileInput.files;
+    if (!files.length) return alert('Select files first');
+    uploadBtn.textContent = 'Uploading...';
+    uploadBtn.disabled = true;
+    
+    let currentMain = div.querySelector('.item-image').value;
+    let currentGalStr = div.querySelector('.item-gallery').value;
+    let currentGal = currentGalStr ? currentGalStr.split(',') : [];
+    
+    for (const file of files) {
+      if (!file.type.startsWith('image/')) continue;
+      const res = await uploadImage(file);
+      if (res.ok && res.data.path) {
+        if (!currentMain) {
+          currentMain = res.data.path;
+        } else {
+          currentGal.push(res.data.path);
+        }
+      }
+    }
+    
+    div.querySelector('.item-image').value = currentMain;
+    div.querySelector('.item-gallery').value = currentGal.join(',');
+    
+    alert('Uploaded! Please hit Save Everything at the bottom to refresh the UI.');
+    uploadBtn.textContent = 'Upload Selected';
+    uploadBtn.disabled = false;
+    fileInput.value = '';
+  });
+  
+  const previews = div.querySelector('.gallery-previews');
+  previews.addEventListener('click', (e) => {
+    if (e.target.classList.contains('rm-img-btn')) {
+      const type = e.target.dataset.target;
+      if (type === 'main') {
+        div.querySelector('.item-image').value = '';
+        e.target.closest('.preview').remove();
+      } else {
+        const src = e.target.dataset.src;
+        let currentGalStr = div.querySelector('.item-gallery').value;
+        let currentGal = currentGalStr ? currentGalStr.split(',') : [];
+        currentGal = currentGal.filter(g => g !== src);
+        div.querySelector('.item-gallery').value = currentGal.join(',');
+        e.target.closest('.preview').remove();
+      }
+    }
+  });
+
   return div;
 }
 
@@ -335,74 +344,36 @@ function createCategoryEditor(category, index) {
   wrap.className = 'repeat-card menu-category-card';
   wrap.innerHTML = `
     <div class="repeat-header">
-      <h4>Kategoria ${index + 1}</h4>
+      <h4>Category ${index + 1}</h4>
       <div class="inline-actions">
-        <button type="button" class="btn btn-primary small-btn add-item">Shto Artikull</button>
-        <button type="button" class="btn btn-secondary small-btn remove-category">Hiq Kategorine</button>
+        <button type="button" class="btn btn-primary small-btn add-item">+ Add Item</button>
+        <button type="button" class="btn btn-secondary small-btn remove-category">Remove</button>
       </div>
     </div>
-    <input class="category-name" placeholder="Emri i kategorise" value="${category.name || ''}">
+    <input class="category-name" placeholder="Category name" value="${category.name || ''}">
     <div class="category-items-list"></div>
   `;
   const itemList = wrap.querySelector('.category-items-list');
   (category.items || []).forEach((item, itemIndex) => itemList.appendChild(createMenuItemEditor(item, itemIndex)));
   wrap.querySelector('.add-item').addEventListener('click', () => {
     itemList.appendChild(createMenuItemEditor({ id: '', name: '', price: 0, description: '', ingredients: '', image: '' }, itemList.children.length));
-    updatePreview();
   });
-  wrap.querySelector('.remove-category').addEventListener('click', () => { wrap.remove(); updatePreview(); });
-  wrap.querySelector('.category-name').addEventListener('input', updatePreview);
+  wrap.querySelector('.remove-category').addEventListener('click', () => wrap.remove());
   return wrap;
-}
-
-
-function createDiscountRuleEditor(rule, index) {
-  const div = document.createElement('div');
-  div.className = 'repeat-card';
-  div.innerHTML = `
-    <div class="repeat-header">
-      <h4>Rregulli ${index + 1}</h4>
-      <button type="button" class="btn btn-secondary small-btn remove-discount-rule">Hiq</button>
-    </div>
-    <div class="admin-grid two">
-      <input class="discount-id" placeholder="ID" value="${rule.id || ''}">
-      <input class="discount-label" placeholder="Emri i rregullit" value="${rule.label || ''}">
-      <input class="discount-percent" type="number" min="0" max="100" placeholder="Ulje %" value="${rule.percent || 0}">
-      <label class="muted">Aktive <input class="discount-active" type="checkbox" ${rule.active ? 'checked' : ''}></label>
-      <input class="discount-start" type="date" value="${rule.startDate || ''}">
-      <input class="discount-end" type="date" value="${rule.endDate || ''}">
-    </div>
-  `;
-  div.querySelector('.remove-discount-rule').addEventListener('click', () => { div.remove(); updatePreview(); });
-  div.querySelectorAll('input').forEach(el => el.addEventListener('input', updatePreview));
-  div.querySelectorAll('input').forEach(el => el.addEventListener('change', updatePreview));
-  return div;
-}
-
-function collectDiscountRules() {
-  return [...document.querySelectorAll('#hotelDiscountRulesList .repeat-card')].map(card => ({
-    id: card.querySelector('.discount-id').value.trim(),
-    label: card.querySelector('.discount-label').value.trim(),
-    percent: Number(card.querySelector('.discount-percent').value || 0),
-    startDate: card.querySelector('.discount-start').value,
-    endDate: card.querySelector('.discount-end').value,
-    active: card.querySelector('.discount-active').checked
-  })).filter(rule => rule.label && rule.startDate && rule.endDate);
 }
 
 function renderAdminForm(data) {
   fillBasicInputs(data);
   const featuredAdminList = byId('featuredAdminList');
   const menuAdminList = byId('menuAdminList');
-  const hotelDiscountRulesList = byId('hotelDiscountRulesList');
   featuredAdminList.innerHTML = '';
   menuAdminList.innerHTML = '';
-  hotelDiscountRulesList.innerHTML = '';
   (data.featuredDishes || []).forEach((item, index) => featuredAdminList.appendChild(createFeaturedEditor(item, index)));
   (data.menuCategories || []).forEach((category, index) => menuAdminList.appendChild(createCategoryEditor(category, index)));
-  (data.hotelDiscountRules || []).forEach((rule, index) => hotelDiscountRulesList.appendChild(createDiscountRuleEditor(rule, index)));
-  updatePreview();
 }
+
+
+// --- Data collection ---
 
 function collectFeatured() {
   return [...document.querySelectorAll('#featuredAdminList .repeat-card')].map(card => ({
@@ -410,7 +381,8 @@ function collectFeatured() {
     name: card.querySelector('.featured-name').value.trim(),
     price: Number(card.querySelector('.featured-price').value || 0),
     image: card.querySelector('.featured-image').value.trim(),
-    description: card.querySelector('.featured-description').value.trim()
+    description: card.querySelector('.featured-description').value.trim(),
+    gallery: (card.querySelector('.featured-gallery').value || '').split(',').map(s => s.trim()).filter(Boolean)
   })).filter(item => item.name);
 }
 
@@ -423,82 +395,28 @@ function collectMenuCategories() {
       price: Number(itemCard.querySelector('.item-price').value || 0),
       image: itemCard.querySelector('.item-image').value.trim(),
       description: itemCard.querySelector('.item-description').value.trim(),
-      ingredients: itemCard.querySelector('.item-ingredients').value.trim()
+      ingredients: itemCard.querySelector('.item-ingredients').value.trim(),
+      gallery: (itemCard.querySelector('.item-gallery').value || '').split(',').map(s => s.trim()).filter(Boolean)
     })).filter(item => item.name)
   })).filter(category => category.name);
 }
 
 function collectAllData() {
+  const base = currentSiteData || defaultSiteData;
   return {
-    ...defaultSiteData,
-    brandTitle: byId('brandTitleInput').value.trim(),
-    brandSub: byId('brandSubInput').value.trim(),
-    heroBadge: byId('heroBadgeInput').value.trim(),
-    heroTitle: byId('heroTitleInput').value.trim(),
-    heroDescription: byId('heroDescriptionInput').value.trim(),
-    heroImage: byId('heroImageInput').value.trim(),
-    contactAddress: byId('addressInput').value.trim(),
-    contactPhone: byId('phoneInput').value.trim(),
-    contactHours: byId('hoursInput').value.trim(),
-    contactInstagram: byId('instagramInput').value.trim(),
-    contactFacebook: byId('facebookInput').value.trim(),
-    mapLink: byId('mapLinkInput').value.trim(),
-    instagramLink: byId('instagramLinkInput').value.trim(),
-    facebookLink: byId('facebookLinkInput').value.trim(),
-    whatsappNumber: byId('whatsappInput').value.trim(),
-    aboutTag: byId('aboutTagInput').value.trim(),
-    aboutTitle: byId('aboutTitleInput').value.trim(),
-    aboutLead: byId('aboutLeadInput').value.trim(),
-    aboutDescription: byId('aboutDescriptionInput').value.trim(),
-    menuPageTitle: byId('menuPageTitleInput').value.trim(),
-    menuPageDescription: byId('menuPageDescriptionInput').value.trim(),
-    hotelDiscountRules: collectDiscountRules(),
-    storyImages: [
-      byId('storyImage1').value.trim(),
-      byId('storyImage2').value.trim(),
-      byId('storyImage3').value.trim(),
-      byId('storyImage4').value.trim()
-    ].filter(Boolean),
+    ...base,
     featuredDishes: collectFeatured(),
     menuCategories: collectMenuCategories()
   };
 }
 
 
-function hasDiscountRuleOverlapClient(rules) {
-  const normalized = (Array.isArray(rules) ? rules : [])
-    .filter(rule => rule && rule.active && rule.startDate && rule.endDate)
-    .sort((a, b) => a.startDate.localeCompare(b.startDate));
-
-  for (let i = 0; i < normalized.length - 1; i++) {
-    if (normalized[i].endDate >= normalized[i + 1].startDate) {
-      return {
-        hasOverlap: true,
-        firstRuleId: normalized[i].id || normalized[i].label || `rule-${i + 1}`,
-        secondRuleId: normalized[i + 1].id || normalized[i + 1].label || `rule-${i + 2}`
-      };
-    }
-  }
-
-  return { hasOverlap: false };
-}
-
-function updatePreview() {
-  const data = collectAllData();
-  const overlap = hasDiscountRuleOverlapClient(data.hotelDiscountRules);
-  const warning = overlap.hasOverlap
-    ? `\n\nWARNING: Overlap detected between "${overlap.firstRuleId}" and "${overlap.secondRuleId}". Save will be blocked by backend.`
-    : '';
-  byId('adminJsonPreview').textContent = JSON.stringify(data, null, 2) + warning;
-}
-
-
-
-
+// --- Init ---
 
 document.addEventListener('DOMContentLoaded', async () => {
   const body = document.body;
 
+  // LOGIN PAGE
   if (body.dataset.page === 'login') {
     const auth = await fetchMe();
     if (auth.authenticated) {
@@ -510,7 +428,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       e.preventDefault();
       const result = await login(byId('username').value.trim(), byId('password').value);
       if (!result.ok) {
-        byId('loginError').textContent = result.data.error || 'Login deshtoi.';
+        byId('loginError').textContent = result.data.error || 'Login failed.';
         return;
       }
       location.href = '/dashboard';
@@ -518,6 +436,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     return;
   }
 
+  // DASHBOARD PAGE
   if (body.dataset.page === 'dashboard') {
     const auth = await fetchMe();
     if (!auth.authenticated) {
@@ -527,74 +446,92 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     byId('adminWelcome').textContent = `Admin: ${auth.user.username}`;
 
+    // Init tabs
+    initTabs();
+
+    // Load analytics
+    try {
+      const analytics = await fetchAnalytics();
+      renderAnalytics(analytics);
+    } catch (e) {
+      console.error('Analytics load failed:', e);
+    }
+
+    // Load site data
     const data = await fetchSiteData();
-    renderAdminForm(data);
+    currentSiteData = data;
+    renderAdminForm(currentSiteData);
 
-    document.querySelectorAll('input, textarea').forEach(el => el.addEventListener('input', updatePreview));
-
+    // Add featured dish
     byId('addFeaturedBtn').addEventListener('click', () => {
       byId('featuredAdminList').appendChild(createFeaturedEditor({ id: '', name: '', price: 0, description: '', image: '' }, byId('featuredAdminList').children.length));
-      updatePreview();
     });
 
+    // Add category
     byId('addCategoryBtn').addEventListener('click', () => {
       byId('menuAdminList').appendChild(createCategoryEditor({ name: '', items: [] }, byId('menuAdminList').children.length));
-      updatePreview();
     });
 
-    byId('addDiscountRuleBtn').addEventListener('click', () => {
-      byId('hotelDiscountRulesList').appendChild(createDiscountRuleEditor({ id: '', label: '', percent: 0, startDate: '', endDate: '', active: true }, byId('hotelDiscountRulesList').children.length));
-      updatePreview();
-    });
-
+    // Save
     byId('saveAllBtn').addEventListener('click', async () => {
       const data = collectAllData();
-      const validation = validateAdminFormData(data);
-      if (!validation.ok) {
-        alert(validation.error);
-        return;
-      }
-
       const result = await saveSiteData(data);
       if (!result.ok) {
-        alert(result.data.error || 'Ruajtja deshtoi.');
+        alert(result.data.error || 'Save failed.');
         return;
       }
-      alert('U ruajt me sukses.');
-      updatePreview();
+      currentSiteData = data;
+      renderAdminForm(currentSiteData);
+      alert('Saved successfully!');
     });
 
+    // Reset
     byId('resetFormBtn').addEventListener('click', async () => {
-      renderAdminForm(defaultSiteData);
+      const data = await fetchSiteData();
+      currentSiteData = data;
+      renderAdminForm(data);
+      alert('Form reset to saved data.');
     });
 
+    // Logout
     byId('logoutBtn').addEventListener('click', logout);
 
-    byId('uploadImageBtn').addEventListener('click', async () => {
-      const file = byId('imageUploadInput').files?.[0];
-      if (!file) {
-        alert('Zgjidh nje imazh para upload-it.');
+    // Change password
+    byId('changePasswordBtn').addEventListener('click', async () => {
+      const currentPw = byId('currentPassword').value;
+      const newPw = byId('newPassword').value;
+      const confirmPw = byId('confirmPassword').value;
+
+      byId('passwordSuccess').style.display = 'none';
+      byId('passwordError').style.display = 'none';
+
+      if (!currentPw || !newPw) {
+        byId('passwordError').textContent = 'Please fill in all fields.';
+        byId('passwordError').style.display = 'block';
+        return;
+      }
+      if (newPw.length < 8) {
+        byId('passwordError').textContent = 'New password must be at least 8 characters.';
+        byId('passwordError').style.display = 'block';
+        return;
+      }
+      if (newPw !== confirmPw) {
+        byId('passwordError').textContent = 'New passwords do not match.';
+        byId('passwordError').style.display = 'block';
         return;
       }
 
-      if (!/^image\/(jpeg|png|webp|gif)$/.test(file.type)) {
-        alert('Lejohen vetem PNG, JPG, WEBP ose GIF.');
-        return;
-      }
-
-      if (file.size > 5 * 1024 * 1024) {
-        alert('Imazhi eshte shume i madh. Maksimumi eshte 5MB.');
-        return;
-      }
-
-      const result = await uploadImage(file);
+      const result = await changePassword(currentPw, newPw);
       if (!result.ok) {
-        alert(result.data.error || 'Upload deshtoi.');
+        byId('passwordError').textContent = result.data.error || 'Password change failed.';
+        byId('passwordError').style.display = 'block';
         return;
       }
 
-      byId('uploadedImagePath').value = result.data.path;
-      alert('Imazhi u ngarkua me sukses. Ky upload punon edhe nga telefoni i pronarit. Kopjo path-in dhe perdore te artikulli ose seksioni qe do.');
+      byId('currentPassword').value = '';
+      byId('newPassword').value = '';
+      byId('confirmPassword').value = '';
+      byId('passwordSuccess').style.display = 'block';
     });
   }
 });

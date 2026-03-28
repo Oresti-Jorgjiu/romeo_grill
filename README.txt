@@ -1,30 +1,35 @@
-Romeo Grill - Version i plotesuar
+Romeo Grill — Restaurant Website
+=================================
 
-Ky version vjen i plotesuar me:
-- emrin e biznesit
-- adresen: Korce, Albania
-- Google Maps link
-- telefonin
-- WhatsApp
-- orarin
-- Instagram
-- Facebook
-- menu te ndare ne kategori
-- artikuj me cmime
-- hapje te detajit te produktit me klikim
-- foto + perberes + pershkrim per secilin artikull
-- upload te fotove nga admin paneli
+A full-stack restaurant website with:
+- Public homepage with hero section, about, featured dishes
+- Digital menu organized by categories with item details
+- Admin dashboard for managing all content
+- Image upload from any device
+- English version (/en/)
+- Mobile responsive design
+- SEO optimized (Open Graph, Twitter Card, JSON-LD)
 
-Si ta hapesh:
-1. Ekstrakto projektin
-2. Ne terminal:
-   npm.cmd install
-3. Pastaj:
-   npm.cmd start
-4. Hape:
+Setup
+-----
+1. Copy .env.example to .env and set your admin credentials
+2. Install dependencies:
+   npm install
+3. Start the server:
+   npm start
+4. Open in browser:
    http://localhost:3000
-5. Admin:
-   http://localhost:3000/admin
 
-Shenim:
-- Menuja eshte ndertuar me strukture reale dhe shembuj te plotesuar, por mund te perditesohet lehte nga admini sapo te vendosni versionin final te menuse.
+Admin Panel
+-----------
+- Login: http://localhost:3000/admin
+- Default credentials: admin / admin12345
+- Change password immediately in .env
+
+Tech Stack
+----------
+- Node.js + Express
+- SQLite (better-sqlite3)
+- Vanilla HTML/CSS/JS (no framework needed)
+- Helmet security + rate limiting
+- bcrypt password hashing

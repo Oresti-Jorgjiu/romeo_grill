@@ -74,127 +74,69 @@
     </a>
     <button class="menu-toggle" id="menuToggle" aria-label="Hap menune e navigimit">☰</button>
     <nav class="nav-links" id="navLinks">
-      <a href="#about">Rreth Nesh</a>
-      <a href="#featured">Pjatat Kryesore</a>
-      <a href="/menu.html">Menu</a>
+      <a href="#home">Kryefaqja</a>
+      <a href="#menu">Menu</a>
       <a href="#contact">Kontakt</a>
       <a href="/en/" class="lang-switch" title="English">🇬🇧 EN</a>
     </nav>
   </div>
 </header>
 
-<section class="hero">
-  <img src="images/storefront.jpeg" alt="Romeo Grill Korce - Restorant Gjiro dhe Grill" class="hero-bg" id="heroImage">
+<section class="hero" id="home">
+  <div class="hero-bg-container">
+    <img id="heroImage" src="images/hero_ultimate.jpg" alt="Romeo Grill Hero" class="hero-bg">
+  </div>
   <div class="hero-overlay"></div>
-  <div class="hero-particles" aria-hidden="true">
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-  </div>
   <div class="container hero-content">
-    <div class="hero-copy">
-      <span class="badge hero-badge-animated" id="heroBadge">🔥 Fast Food • Grill • Gjiro</span>
+    <div class="hero-glass-card">
+      <div class="hero-badge-wrap">
+        <span class="badge hero-badge-animated" id="heroBadge">🔥 Grill • Fast Food • Gjiro</span>
+      </div>
       <h1 id="heroTitle" class="hero-title-animated">Romeo Grill</h1>
-      <p class="hero-subtitle">Korce, Albania</p>
-      <p id="heroDescription" class="hero-desc-animated">Grill, gjiro dhe pjata te nxehta ne zemer te Korces. Zgjidhni me te miren per vaktin tuaj dhe shijoni freskine e mjeshtrine ne cdo kafshate.</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary btn-glow" href="/menu.html">
-          <span class="btn-icon">📖</span> Hap Menune
-        </a>
-        <a class="btn btn-secondary" id="heroMapBtn" href="https://maps.app.goo.gl/T1pQtM8KqkLht8pB6" target="_blank" rel="noopener">
-          <span class="btn-icon">📍</span> Hap Lokacionin
-        </a>
-        <a class="btn btn-whatsapp" href="https://wa.me/355696472338" target="_blank" rel="noopener">
-          <span class="btn-icon">💬</span> Na Shkruaj
+      <p class="hero-subtitle hero-desc-animated" id="brandSub">Korce, Albania</p>
+      <div class="hero-actions hero-desc-animated">
+        <a class="btn btn-primary btn-glow btn-hero-large" href="#menu">
+          Shiko Menune <span class="btn-icon">↓</span>
         </a>
       </div>
-      <div class="hero-stats">
-        <div class="hero-stat">
-          <span class="hero-stat-number">7</span>
-          <span class="hero-stat-label">Kategori</span>
-        </div>
-        <div class="hero-stat">
-          <span class="hero-stat-number">59</span>
-          <span class="hero-stat-label">Artikuj</span>
-        </div>
-        <div class="hero-stat">
-          <span class="hero-stat-number">09-23</span>
-          <span class="hero-stat-label">Orari</span>
-        </div>
-        <div class="hero-stat">
-          <span class="hero-stat-number">14h</span>
-          <span class="hero-stat-label">Cdo Dite</span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="hero-scroll-indicator" aria-hidden="true">
-    <span>↓</span>
-  </div>
-</section>
-
-<section id="about" class="section">
-  <div class="container split-grid">
-    <div>
-      <span class="section-tag" id="aboutTag">Tradite dhe Shije</span>
-      <h2 id="aboutTitle">Shija e vertete e zgares, e pergatitur me mjeshtri cdo dite.</h2>
-      <p class="lead" id="aboutLead">Te Romeo Grill, ne nuk sherbejme thjesht ushqim — ne ofrojme nje pervoje. Nga xiroja e ngrohte dhe plot shije, te pjatat e bollshme te zgares me mishra te perzgjedhur, cdo porosi pergatitet me kujdes e pasion.</p>
-      <p id="aboutDescription">Ne besojme te cilesia e larte dhe perberesit gjithmone te fresket. Qofsh ne kerkim te nje vakti te shpejte gjate pushimit, apo nje darke te bollshme familjare, Romeo Grill ne zemer te Korces eshte ndalesa juaj ideale.</p>
-    </div>
-    <div class="glass-card">
-      <h3>Pse Romeo Grill?</h3>
-      <p>Cmime transparente, produkte te fresketa dhe menu e organizuar qarte. Gjiro me mish pule, qofte ose derri — pjata te nxehta per dreke e darke — dhe pije freskuese per cdo kohe.</p>
     </div>
   </div>
 </section>
 
-<section id="featured" class="section section-dark">
+<!-- Sticky Category Navigation Bar -->
+<div class="category-sticky-bar" id="categoryBar">
+  <div class="container sticky-chip-container" id="categoryTabsContainer">
+    <!-- Categories injected via JS -->
+  </div>
+</div>
+
+<section id="menu" class="section section-dark unified-menu-section">
   <div class="container">
-    <div class="section-head">
-      <div>
-        <span class="section-tag">Pjatat Kryesore</span>
-        <h2>Gjiro & Pjata — Zgjedhjet Tona</h2>
-      </div>
-      <p>Produktet me te preferuara nga klientet tane. Kliko per te pare foton dhe perberesit.</p>
+    <div id="fullMenuContainer" class="unified-menu-grid">
+      <!-- Menu items injected via JS -->
     </div>
-    <div class="featured-grid" id="featuredGrid"></div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container image-story-grid">
-    <div>
-      <span class="section-tag">Nga kuzhina jone</span>
-      <h2>Cdo pjate, e fresket dhe e nxehte.</h2>
-      <p class="lead">Produktet tona pergatiten me kujdes cdo dite. Shikoni disa nga pjatat tona — pastaj hapni menune dhe zgjidhni te preferuaren tuaj.</p>
-      <a class="btn btn-primary" href="/menu.html" style="margin-top:20px;display:inline-flex;">Shiko Menune e Plote</a>
-    </div>
-    <div class="story-images" id="storyImages"></div>
   </div>
 </section>
 
 <section id="contact" class="section">
   <div class="container split-grid">
     <div>
-      <span class="section-tag">Na Kontaktoni</span>
-      <h2>Gjeni & Kontaktoni Romeo Grill</h2>
-      <div class="contact-list">
+      <span class="section-tag">Kontakti</span>
+      <h2>Na Vizitoni & Porositni</h2>
+      <p class="lead">Gati per te shijuar pjatat tona? Porosit shpejt via WhatsApp ose na gjeni ne qender te Korces per nje dreke a darke te nxehte.</p>
+      <div class="contact-list minimal-contact">
         <p><strong>📍 Adresa:</strong> <span id="contactAddress">Korce, Albania</span></p>
         <p><strong>📞 Telefoni:</strong> <a href="tel:0696930010"><span id="contactPhone">0696930010</span></a></p>
         <p><strong>🕐 Orari:</strong> <span id="contactHours">09:00 - 23:00</span></p>
-        <p><strong>💬 WhatsApp:</strong> <a id="whatsappLinkEl" href="https://wa.me/355696472338" target="_blank" rel="noopener"><span id="contactWhatsapp">0696472338</span></a></p>
-        <p><strong>📷 Instagram:</strong> <a id="instagramLinkEl" href="https://www.instagram.com/romeogrill2024/" target="_blank" rel="noopener"><span id="contactInstagram">@romeogrill2024</span></a></p>
-        <p><strong>Facebook:</strong> <a id="facebookLinkEl" href="https://www.facebook.com/romeo.grill.3/" target="_blank" rel="noopener"><span id="contactFacebook">Romeo Grill</span></a></p>
-        <p><strong>🗺️ Google Maps:</strong> <a id="mapLinkEl" href="https://maps.app.goo.gl/T1pQtM8KqkLht8pB6" target="_blank" rel="noopener">Hap Lokacionin →</a></p>
       </div>
     </div>
-    <div class="glass-card">
-      <h3>Na gjeni lehte</h3>
-      <p>Jemi ne qender te Korces, te hapur cdo dite nga ora 09:00 deri 23:00. Per porosi ose informacion, mund te na kontaktoni direkt ne WhatsApp ose telefon.</p>
-      <p style="margin-top:14px;">Kenaqesia juaj eshte prioriteti yne — produktet tona pergatiten te fresketa dhe sherbehen shpejt.</p>
+    <div class="glass-card flex-center">
+        <a class="btn btn-whatsapp btn-large full" id="whatsappLinkEl" href="https://wa.me/355696472338" target="_blank" rel="noopener">
+          <span class="btn-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: middle;"><path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.05-.084-.182-.133-.38-.232"/></svg></span> Porosit ne WhatsApp
+        </a>
+        <a class="btn btn-secondary btn-large full" id="mapLinkEl" href="https://maps.app.goo.gl/T1pQtM8KqkLht8pB6" target="_blank" rel="noopener" style="margin-top: 14px;">
+          <span class="btn-icon">📍</span> Rruga ne Google Maps
+        </a>
     </div>
   </div>
 </section>
@@ -206,15 +148,23 @@
       <p>Korce, Albania • 09:00 - 23:00</p>
     </div>
     <div class="footer-links">
-      <a href="/">Kryefaqja</a>
-      <a href="/menu.html">Menu</a>
-      <a href="https://www.instagram.com/romeogrill2024/" target="_blank" rel="noopener">Instagram</a>
-      <a href="https://www.facebook.com/romeo.grill.3/" target="_blank" rel="noopener">Facebook</a>
-      <a href="https://wa.me/355696472338" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="#home">Kryefaqja</a>
+      <a href="#menu">Menu</a>
+      <a id="instagramLinkEl" href="https://www.instagram.com/romeogrill2024/" target="_blank" rel="noopener">Instagram</a>
+      <a id="facebookLinkEl" href="https://www.facebook.com/romeo.grill.3/" target="_blank" rel="noopener">Facebook</a>
     </div>
     <p class="footer-copy">&copy; 2025 Romeo Grill. Te gjitha te drejtat e rezervuara.</p>
   </div>
 </footer>
+
+<div class="fixed-actions">
+  <a href="tel:0696930010" class="fixed-btn fixed-phone" id="fixedPhoneLink" aria-label="Telefono">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+  </a>
+  <a href="https://wa.me/355696472338" class="fixed-btn fixed-wa" id="fixedWaLink" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.05-.084-.182-.133-.38-.232"/></svg>
+  </a>
+</div>
 
 <script src="site.js"></script>
 </body>
